@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Iniciar Sesión - Biblioteca XYZ</title>
+
+  <!-- Bootstrap -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+  <!-- CSS propio -->
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+
+<body>
+  <div class="container-fluid min-vh-100 d-flex align-items-center justify-content-center">
+    <div class="row w-75 shadow-lg rounded overflow-hidden">
+      <!-- Imagen lateral -->
+      <div class="col-md-6 d-none d-md-block p-0">
+        <img src="images/login_side.jpg" alt="Biblioteca" class="img-fluid h-100 w-100 object-fit-cover">
+      </div>
+
+      <!-- Formulario -->
+      <div class="col-md-6 bg-white p-5 d-flex flex-column justify-content-center">
+        <div class="text-center mb-4">
+          <img src="images/logo.png" alt="Logo Biblioteca XYZ" style="width:80px;">
+          <h2 class="fw-bold mt-3">Bienvenido a la Biblioteca XYZ</h2>
+          <p class="text-muted">Inicia sesión para continuar</p>
+        </div>
+
+        <form id="loginForm">
+          <div class="mb-3">
+            <label for="email" class="form-label">Correo electrónico</label>
+            <input type="email" id="email" class="form-control" placeholder="Ingresa tu correo" required>
+          </div>
+
+          <div class="mb-3">
+            <label for="password" class="form-label">Contraseña</label>
+            <input type="password" id="password" class="form-control" placeholder="Ingresa tu contraseña" required>
+          </div>
+
+          <div class="d-grid mt-4">
+            <button type="submit" class="btn btn-primary">Ingresar</button>
+          </div>
+        </form>
+
+        <div class="text-center mt-3">
+          <small class="text-muted">¿Olvidaste tu contraseña?</small><br>
+          <a href="recuperarcontra.html" class="text-decoration-none">Recupérala aquí</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+  <!-- Validación básica -->
+  <script>
+    document.getElementById('loginForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      const email = document.getElementById('email').value;
+      const password = document.getElementById('password').value;
+
+      if (email === "admin@example.com" && password === "123456") {
+        window.location.href = "dashboard.html";
+      } else {
+        alert("Credenciales incorrectas. Intenta nuevamente.");
+      }
+    });
+  </script>
+</body>
+</html>

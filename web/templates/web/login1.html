@@ -1,0 +1,245 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Login - Biblioteca</title>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --wine-1: #7a1f3d;
+      --wine-2: #b03a65;
+      --muted: #f4f4f6;
+      --card-bg: #ffffff;
+      --accent: #d95b7a;
+      --text-dark: #2b2b2b;
+    }
+    *{box-sizing:border-box;font-family:'Poppins',system-ui,Arial,Helvetica,sans-serif}
+    body{
+      margin:0;
+      min-height:100vh;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      background:linear-gradient(180deg, var(--wine-1), var(--wine-2));
+      color:var(--muted);
+    }
+
+    /* Card */
+    .login-wrap{
+      width:100%;
+      max-width:1000px;
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap:0;
+      border-radius:16px;
+      overflow:hidden;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+      background: #fff;
+    }
+
+    .brand {
+      padding:40px;
+      background: linear-gradient(135deg, rgba(122,31,61,0.95) 0%, rgba(176,58,101,0.95) 100%);
+      color: white;
+      display:flex;
+      flex-direction:column;
+      justify-content:center;
+      align-items:center;
+      gap:24px;
+    }
+    .brand .logo{
+      font-weight:700;
+      font-size:28px;
+      letter-spacing:1px;
+    }
+    .brand img{
+      width:180px;
+      border-radius:10px;
+      box-shadow: 0 6px 16px rgba(0,0,0,0.25);
+    }
+    .brand p{margin:0;opacity:0.95;font-size:14px;text-align:center;}
+
+    .form-area{
+      background:var(--card-bg);
+      padding:48px;
+      color:var(--text-dark);
+    }
+    h2{margin:0 0 16px 0;color:var(--wine-1)}
+    .small{color:#666;font-size:13px;margin-bottom:18px}
+
+    form{display:flex;flex-direction:column;gap:12px}
+    label{font-size:13px;color:#444}
+    input[type="text"], input[type="password"]{
+      width:100%;padding:12px 14px;border-radius:8px;border:1px solid #e6e6e9;font-size:14px;
+      outline:none;transition:box-shadow .15s, border-color .15s;
+    }
+    input:focus{box-shadow:0 6px 18px rgba(122,31,61,0.08);border-color:var(--wine-2)}
+
+    .row{display:flex;gap:12px}
+    .btn{
+      display:inline-flex;align-items:center;justify-content:center;
+      padding:12px 18px;border-radius:10px;border:0;background:var(--wine-1);
+      color:white;font-weight:600;cursor:pointer;
+    }
+    .btn.secondary{background:transparent;color:var(--wine-1);border:1px solid #f0e9eb}
+    .helper{display:flex;justify-content:space-between;align-items:center;margin-top:6px;font-size:13px;color:#777}
+
+    .error{
+      background:#ffecec;color:#8b1f1f;padding:10px;border-radius:8px;font-size:13px;margin-top:6px;display:none;
+    }
+
+    .loader{display:inline-block;width:18px;height:18px;border:3px solid rgba(255,255,255,0.6);border-left-color:white;border-radius:50%;animation:spin .9s linear infinite;margin-left:8px}
+    @keyframes spin{to{transform:rotate(360deg)}}
+
+    /* Responsive */
+    @media (max-width:900px){
+      .login-wrap{grid-template-columns:1fr;max-width:420px}
+      .brand img{width:140px}
+    }
+  </style>
+</head>
+<body>
+
+  <div class="login-wrap" role="main">
+    <div class="brand" aria-hidden="false">
+      <div class="logo">Biblioteca U</div>
+      <!-- Imagen estilo del mockup (puedes reemplazar con tu propio asset) -->
+      <img src="https://images.unsplash.com/photo-1524995997946-a1c2e315a42f?q=80&w=800&auto=format&fit=crop&ixlib=rb-4.0.3&s=3f3f3f" alt="persona con laptop">
+      <p>Accede con tu cuenta institucional para administrar préstamos y registros.</p>
+    </div>
+
+    <div class="form-area" aria-label="Formulario de inicio de sesión">
+      <h2>Bienvenida/o</h2>
+      <div class="small">Inicia sesión con tu usuario y contraseña</div>
+
+      <div id="err" class="error" role="alert"></div>
+
+      <form id="loginForm" autocomplete="off" novalidate>
+        <div>
+          <label for="username">Usuario</label>
+          <input id="username" name="username" type="text" placeholder="correo o usuario">
+        </div>
+
+        <div>
+          <label for="password">Contraseña</label>
+          <input id="password" name="password" type="password" placeholder="********">
+        </div>
+
+        <div class="helper">
+          <div style="font-size:13px;color:#888"><input id="remember" type="checkbox"> <label for="remember" style="display:inline">Recordarme</label></div>
+          <div style="font-size:13px"><a href="#" id="forgot" style="color:var(--wine-1);text-decoration:none">¿Olvidaste?</a></div>
+        </div>
+
+        <div style="margin-top:14px;display:flex;gap:12px;align-items:center">
+          <button type="submit" class="btn" id="submitBtn">Iniciar sesión</button>
+          <button type="button" class="btn secondary" id="demoBtn">Acceso demo</button>
+        </div>
+      </form>
+
+      <p style="margin-top:18px;font-size:13px;color:#999">¿No tienes cuenta? <a href="#" style="color:var(--wine-1)">Contacta al admin</a></p>
+    </div>
+  </div>
+
+<script>
+  // CONFIG: cambia esta URL por la de tu backend
+  const LOGIN_URL = "http://localhost:8000/api/auth/login/"; // ejemplo Django REST endpoint
+
+  const form = document.getElementById('loginForm');
+  const errBox = document.getElementById('err');
+  const submitBtn = document.getElementById('submitBtn');
+  const demoBtn = document.getElementById('demoBtn');
+
+  function showError(msg){
+    errBox.style.display = 'block';
+    errBox.textContent = msg;
+  }
+  function hideError(){
+    errBox.style.display = 'none';
+    errBox.textContent = '';
+  }
+
+  // Helper: set loading state
+  function setLoading(on){
+    if(on){
+      submitBtn.disabled = true;
+      submitBtn.innerHTML = 'Iniciando <span class="loader" aria-hidden="true"></span>';
+    } else {
+      submitBtn.disabled = false;
+      submitBtn.innerHTML = 'Iniciar sesión';
+    }
+  }
+
+  // Demo quick-login (solo para pruebas sin backend)
+  demoBtn.addEventListener('click', ()=>{
+    document.getElementById('username').value = 'demo@uni.edu';
+    document.getElementById('password').value = 'demopass';
+  });
+
+  form.addEventListener('submit', async (e)=>{
+    e.preventDefault();
+    hideError();
+
+    const username = document.getElementById('username').value.trim();
+    const password = document.getElementById('password').value.trim();
+    if(!username || !password){
+      showError('Ingresa usuario y contraseña.');
+      return;
+    }
+
+    // Si no quieres usar "pip" ni backend ahora, puedes
+    // simular con un timeout. Pero acá se muestra la llamada real.
+    setLoading(true);
+
+    try {
+      // Llamada al backend: ajustar headers/payload según tu API
+      const res = await fetch(LOGIN_URL, {
+        method: 'POST',
+        credentials: 'include', // opcional, si usas cookies
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        },
+        body: JSON.stringify({ username, password })
+      });
+
+      // Si el backend devuelve JSON con token o error
+      const data = await res.json().catch(()=>({}));
+
+      if (!res.ok) {
+        // manejo simple de errores esperables
+        const message = data.detail || data.error || data.message || 'Usuario o contraseña inválidos';
+        showError(message);
+        setLoading(false);
+        return;
+      }
+
+      // Ejemplo: backend devuelve { token: "..." } o { access: "...", refresh: "..." }
+      let token = data.token || data.access;
+      if(token){
+        // guarda token
+        if(document.getElementById('remember').checked){
+          localStorage.setItem('biblioteca_token', token);
+        } else {
+          sessionStorage.setItem('biblioteca_token', token);
+        }
+      }
+
+      // Redirige al dashboard (cambia la ruta si tienes otra)
+      window.location.href = 'dashboard.html';
+
+    } catch (error) {
+      console.error(error);
+      showError('No se pudo conectar con el servidor. Revisa CORS y que el backend esté corriendo.');
+    } finally {
+      setLoading(false);
+    }
+  });
+
+  // Nota: Si tu backend usa CSRF + cookies (Django por ejemplo), o devuelve cookies,
+  // tendrás que ajustar credentials: 'include' y la configuración CORS en backend.
+</script>
+
+</body>
+</html>

@@ -1,0 +1,301 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Dashboard - Biblioteca</title>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --wine-1: #7a1f3d;
+      --wine-2: #b03a65;
+      --light-bg: #f6f6f9;
+      --card-bg: #fff;
+      --text-dark: #2b2b2b;
+      --muted: #888;
+      --accent: #d95b7a;
+    }
+    * {
+      box-sizing: border-box;
+      font-family: 'Poppins', system-ui, sans-serif;
+      margin: 0;
+      padding: 0;
+    }
+    body {
+      display: flex;
+      min-height: 100vh;
+      background: var(--light-bg);
+      color: var(--text-dark);
+    }
+
+    /* SIDEBAR */
+    .sidebar {
+      width: 240px;
+      background: linear-gradient(180deg, var(--wine-1), var(--wine-2));
+      color: white;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      transition: width .2s ease;
+    }
+    .sidebar .logo {
+      font-weight: 700;
+      font-size: 20px;
+      text-align: center;
+      padding: 20px;
+      letter-spacing: 0.5px;
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+    }
+    .nav {
+      flex-grow: 1;
+      display: flex;
+      flex-direction: column;
+      padding-top: 10px;
+    }
+    .nav a {
+      color: white;
+      padding: 14px 24px;
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 15px;
+      transition: background .2s;
+    }
+    .nav a:hover, .nav a.active {
+      background: rgba(255,255,255,0.15);
+    }
+    .nav a svg {
+      width: 18px;
+      height: 18px;
+      fill: white;
+    }
+
+    /* HEADER */
+    .main {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      min-width: 0;
+    }
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: #fff;
+      padding: 16px 24px;
+      border-bottom: 1px solid #eee;
+    }
+    header h1 {
+      font-size: 18px;
+      font-weight: 600;
+      color: var(--wine-1);
+    }
+    .logout-btn {
+      background: var(--wine-1);
+      color: #fff;
+      border: none;
+      border-radius: 6px;
+      padding: 8px 14px;
+      font-size: 13px;
+      cursor: pointer;
+      transition: background .2s;
+    }
+    .logout-btn:hover { background: var(--wine-2); }
+
+    /* CONTENT AREA */
+    .content {
+      padding: 24px;
+      flex-grow: 1;
+      overflow-y: auto;
+    }
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 20px;
+    }
+    .card {
+      background: var(--card-bg);
+      border-radius: 14px;
+      box-shadow: 0 3px 10px rgba(0,0,0,0.05);
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      min-height: 110px;
+      transition: transform .2s ease;
+    }
+    .card:hover {
+      transform: translateY(-2px);
+    }
+    .card h3 {
+      font-size: 15px;
+      color: var(--muted);
+      font-weight: 500;
+      margin-bottom: 6px;
+    }
+    .card .value {
+      font-size: 26px;
+      font-weight: 600;
+      color: var(--wine-1);
+    }
+
+    /* TABLE STYLE */
+    .table-section {
+      margin-top: 40px;
+    }
+    .table-section h2 {
+      margin-bottom: 16px;
+      font-size: 17px;
+      color: var(--wine-1);
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      background: #fff;
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    }
+    th, td {
+      padding: 12px 14px;
+      border-bottom: 1px solid #eee;
+      text-align: left;
+      font-size: 14px;
+    }
+    th {
+      background: #fafafa;
+      color: var(--wine-1);
+      font-weight: 600;
+    }
+    tr:hover {
+      background: #fdf3f6;
+    }
+
+    /* RESPONSIVE */
+    @media (max-width: 720px){
+      .sidebar { width: 60px; }
+      .sidebar .logo { font-size: 0; padding: 16px; }
+      .nav a span { display: none; }
+      .nav a svg { margin: 0 auto; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <div>
+      <div class="logo">Biblioteca U</div>
+      <nav class="nav">
+        <a href="#" class="active">
+          <svg viewBox="0 0 24 24"><path d="M12 3l8 8h-5v7H9v-7H4z"/></svg>
+          <span>Inicio</span>
+        </a>
+        <a href="#">
+          <svg viewBox="0 0 24 24"><path d="M6 4h12v2H6zm0 4h12v2H6zm0 4h8v2H6z"/></svg>
+          <span>Libros</span>
+        </a>
+        <a href="#">
+          <svg viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14h2v-2h14v2h2V5c0-1.1-.9-2-2-2zM5 15V5h14v10H5z"/></svg>
+          <span>Préstamos</span>
+        </a>
+        <a href="#">
+          <svg viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4S14.21 4 12 4 8 5.79 8 8s1.79 4 4 4zm0 2c-2.33 0-7 1.17-7 3.5V20h14v-2.5c0-2.33-4.67-3.5-7-3.5z"/></svg>
+          <span>Usuarios</span>
+        </a>
+      </nav>
+    </div>
+  </aside>
+
+  <!-- MAIN -->
+  <div class="main">
+    <header>
+      <h1>Bienvenido(a), <span id="userName">Usuario</span></h1>
+      <button class="logout-btn" id="logoutBtn">Cerrar sesión</button>
+    </header>
+
+    <div class="content">
+      <section class="cards">
+        <div class="card">
+          <h3>Total de libros</h3>
+          <div class="value" id="librosCount">0</div>
+        </div>
+        <div class="card">
+          <h3>Préstamos activos</h3>
+          <div class="value" id="prestamosCount">0</div>
+        </div>
+        <div class="card">
+          <h3>Usuarios registrados</h3>
+          <div class="value" id="usuariosCount">0</div>
+        </div>
+        <div class="card">
+          <h3>Alertas pendientes</h3>
+          <div class="value" id="alertasCount">0</div>
+        </div>
+      </section>
+
+      <section class="table-section">
+        <h2>Últimos préstamos</h2>
+        <table>
+          <thead>
+            <tr><th>Usuario</th><th>Libro</th><th>Fecha</th><th>Estado</th></tr>
+          </thead>
+          <tbody id="tablaPrestamos">
+            <tr><td colspan="4" style="text-align:center;color:#999;">Cargando...</td></tr>
+          </tbody>
+        </table>
+      </section>
+    </div>
+  </div>
+
+  <script>
+    // Verifica si hay token guardado (login)
+    const token = localStorage.getItem('biblioteca_token') || sessionStorage.getItem('biblioteca_token');
+    if(!token){
+      window.location.href = 'login.html';
+    }
+
+    // Saludo con nombre (ejemplo)
+    document.getElementById('userName').textContent = "Bibliotecario";
+
+    // Simulación de datos (luego conectaremos API)
+    const datos = {
+      libros: 1324,
+      prestamos: 57,
+      usuarios: 245,
+      alertas: 3,
+      ultimosPrestamos: [
+        { usuario: "María Torres", libro: "Cien años de soledad", fecha: "2025-10-28", estado: "Activo" },
+        { usuario: "Luis G.", libro: "1984", fecha: "2025-10-27", estado: "Devuelto" },
+        { usuario: "Andrea P.", libro: "Don Quijote", fecha: "2025-10-26", estado: "Activo" },
+      ]
+    };
+
+    // Cargar datos simulados
+    document.getElementById('librosCount').textContent = datos.libros;
+    document.getElementById('prestamosCount').textContent = datos.prestamos;
+    document.getElementById('usuariosCount').textContent = datos.usuarios;
+    document.getElementById('alertasCount').textContent = datos.alertas;
+
+    const tbody = document.getElementById('tablaPrestamos');
+    tbody.innerHTML = datos.ultimosPrestamos.map(p => `
+      <tr>
+        <td>${p.usuario}</td>
+        <td>${p.libro}</td>
+        <td>${p.fecha}</td>
+        <td>${p.estado}</td>
+      </tr>
+    `).join('');
+
+    // Cerrar sesión
+    document.getElementById('logoutBtn').addEventListener('click', ()=>{
+      localStorage.removeItem('biblioteca_token');
+      sessionStorage.removeItem('biblioteca_token');
+      window.location.href = 'login.html';
+    });
+  </script>
+
+</body>
+</html>

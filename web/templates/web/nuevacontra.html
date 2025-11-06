@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Nueva Contraseña - Biblioteca XYZ</title>
+
+  <!-- Bootstrap -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+  <!-- CSS propio -->
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+
+<body>
+  <div class="container d-flex align-items-center justify-content-center min-vh-100">
+    <div class="login-card text-center">
+      <img src="images/logo.png" alt="Logo Biblioteca XYZ" class="mb-3" style="width:80px;">
+
+      <h2 class="fw-bold mb-2">Restablecer Contraseña</h2>
+      <p class="text-muted mb-4">Ingresa tu nueva contraseña para acceder nuevamente a la Biblioteca XYZ.</p>
+
+      <form id="newPassForm" class="text-start">
+        <div class="mb-3">
+          <label for="newPassword" class="form-label">Nueva contraseña</label>
+          <input type="password" id="newPassword" class="form-control" placeholder="Escribe tu nueva contraseña" required>
+        </div>
+
+        <div class="mb-3">
+          <label for="confirmPassword" class="form-label">Confirmar contraseña</label>
+          <input type="password" id="confirmPassword" class="form-control" placeholder="Repite la contraseña" required>
+        </div>
+
+        <div class="d-grid mt-4">
+          <button type="submit" class="btn btn-primary">Guardar nueva contraseña</button>
+        </div>
+      </form>
+
+      <div class="text-center mt-3">
+        <a href="login.html" class="text-decoration-none">&larr; Volver al inicio de sesión</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+  <!-- Lógica básica -->
+  <script>
+    document.getElementById('newPassForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      const newPass = document.getElementById('newPassword').value;
+      const confirmPass = document.getElementById('confirmPassword').value;
+
+      if (newPass !== confirmPass) {
+        alert("Las contraseñas no coinciden. Intenta nuevamente.");
+        return;
+      }
+
+      if (newPass.length < 6) {
+        alert("La contraseña debe tener al menos 6 caracteres.");
+        return;
+      }
+
+      alert("Tu contraseña ha sido actualizada exitosamente.");
+      window.location.href = "login.html";
+    });
+  </script>
+</body>
+</html>
