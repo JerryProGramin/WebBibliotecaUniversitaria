@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestión de Estudiantes</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background-color: #f4f6f8;
+            margin: 0;
+            padding: 0;
+        }
+        header {
+            background-color: #004e92;
+            color: white;
+            padding: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        header h1 {
+            margin: 0;
+            font-size: 22px;
+        }
+        header a {
+            color: white;
+            text-decoration: none;
+            background: #0077cc;
+            padding: 8px 12px;
+            border-radius: 6px;
+        }
+        main {
+            padding: 30px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background-color: white;
+        }
+        th, td {
+            padding: 10px;
+            border-bottom: 1px solid #ddd;
+            text-align: center;
+        }
+        tr:hover {
+            background-color: #f0f0f0;
+        }
+        .btn {
+            padding: 6px 10px;
+            border-radius: 5px;
+            text-decoration: none;
+            color: white;
+            font-size: 14px;
+        }
+        .btn-create { background-color: #28a745; }
+        .btn-edit { background-color: #007bff; }
+        .btn-delete { background-color: #dc3545; }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Panel de Estudiantes</h1>
+        <a href="{% url 'logout' %}">Cerrar sesión</a>
+    </header>
+
+    <main>
+        <a href="{% url 'student_create' %}" class="btn btn-create">➕ Nuevo Estudiante</a>
+        <br><br>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Nombres</th>
+                    <th>Apellidos</th>
+                    <th>DNI</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for est in estudiantes %}
+                <tr>
+                    <td>{{ est.id }}</td>
+                    <td>{{ est.nombres }}</td>
+                    <td>{{ est.apellidos }}</td>
+                    <td>{{ est.dni }}</td>
+                    <td>
+                        <a href="{% url 'student_update' est.id %}" class="btn btn-edit">✏️ Editar</a>
+                        <a href="{% url 'student_delete' est.id %}" class="btn btn-delete"
+                           onclick="return confirm('¿Seguro que deseas eliminar este estudiante?');">🗑️ Eliminar</a>
+                    </td>
+                </tr>
+                {% empty %}
+                <tr><td colspan="5">No hay estudiantes registrados.</td></tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </main>
+</body>
+</html>

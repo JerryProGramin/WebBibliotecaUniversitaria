@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ accion }} Estudiante</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background: #f4f6f8;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        form {
+            background: white;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.2);
+            width: 350px;
+        }
+        input {
+            width: 100%;
+            margin-bottom: 10px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+        }
+        button {
+            width: 100%;
+            padding: 10px;
+            background: #007bff;
+            color: white;
+            border: none;
+            border-radius: 6px;
+        }
+        button:hover { background: #0056b3; }
+        a {
+            display: block;
+            text-align: center;
+            margin-top: 10px;
+            text-decoration: none;
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+    <form method="POST">
+        {% csrf_token %}
+        <h2>{{ accion }} Estudiante</h2>
+        <input type="text" name="nombres" placeholder="Nombres" required value="{{ estudiante.nombres|default:'' }}">
+        <input type="text" name="apellidos" placeholder="Apellidos" required value="{{ estudiante.apellidos|default:'' }}">
+        <input type="text" name="dni" placeholder="DNI" required value="{{ estudiante.dni|default:'' }}">
+        <button type="submit">{{ accion }}</button>
+        <a href="{% url 'home' %}">← Volver</a>
+    </form>
+</body>
+</html>

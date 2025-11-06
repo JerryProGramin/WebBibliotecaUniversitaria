@@ -14,7 +14,6 @@ class tb_author(models.Model):
 
 class tb_book(models.Model):
     titulo = models.CharField(max_length=200)
-    autor = models.CharField(max_length=100)
     anio_publicacion = models.IntegerField()
     category = models.ManyToManyField('tb_category', blank=True)
     autor = models.ForeignKey(tb_author, on_delete=models.CASCADE)
@@ -23,13 +22,13 @@ class tb_book(models.Model):
         return self.titulo
 
 class tb_book_detail(models.Model):
-    libro_padre = models.ForeignKey(tb_book, on_delete=models.CASCADE)
+    libro_padre = models.ForeignKey(tb_book, on_delete=models.CASCADE, related_name="detalles")
     codigo_isbn = models.CharField(max_length=13)
     estado_fisico = models.CharField(max_length=100)
     estado_prestamo = models.BooleanField()
     
     def __str__(self):
-        return self.codigo_isbn
+        return f"{self.codigo_isbn} ({self.libro_padre.titulo})"
 
 class tb_user(models.Model):
     nombre = models.CharField(max_length=100)
@@ -45,7 +44,7 @@ class tb_student(models.Model):
     dni = models.CharField(max_length=8)
 
     def __str__(self):
-        return self.nombres
+        return f"{self.nombres} {self.apellidos}"
 
 class tb_loan(models.Model):
     estudiante = models.ForeignKey(tb_student, on_delete=models.CASCADE)
@@ -55,5 +54,5 @@ class tb_loan(models.Model):
     comentarios = models.CharField(max_length=200)
 
     def __str__(self):
-        return self.estudiante
+        return f"Préstamo de {self.estudiante} - {self.libro.codigo_isbn}"
 

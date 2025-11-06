@@ -20,10 +20,5 @@ from django.urls import path, include
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-
-    # frontend
     path('', include('web.urls')),
-
-    # backend API
-    path('api/', include('api.urls')),
 ]
