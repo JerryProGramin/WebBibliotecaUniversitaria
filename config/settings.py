@@ -81,7 +81,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'bd_biblioteca_uni',      # el nombre que creaste
         'USER': 'root',
-        'PASSWORD': '',
+        'PASSWORD': '123',
         'HOST': 'localhost',           # o el host de tu servidor
         'PORT': '3306',                # el puerto por defecto
         'OPTIONS': {
