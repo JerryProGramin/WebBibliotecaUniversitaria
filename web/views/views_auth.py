@@ -9,10 +9,9 @@ def login_view(request):
 
         try:
             user = tb_user.objects.get(email=email, password=password)
-            # Guarda sesión
             request.session['usuario_id'] = user.id
             request.session['usuario_nombre'] = user.nombre
-            return redirect('home')  # Redirige a otra página después del login
+            return redirect('home')
         except tb_user.DoesNotExist:
             return render(request, 'web/index.html', {'error': 'Credenciales incorrectas :('})
 
