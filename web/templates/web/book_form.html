@@ -1,0 +1,36 @@
+{% extends 'web/base.html' %}
+{% block title %}Registrar Libro{% endblock %}
+{% block content %}
+<div class="card form-card">
+    <h2>Registrar Libro</h2>
+    <form method="post" class="form-grid">
+        {% csrf_token %}
+        <div class="form-group full">
+            <label>Título</label>
+            <input type="text" name="titulo" required>
+        </div>
+        <div class="form-group">
+            <label>Autor</label>
+            <select name="autor" required>
+                {% for a in autores %}
+                <option value="{{ a.id }}">{{ a.nombre }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="form-group">
+            <label>Año de Publicación</label>
+            <input type="number" name="anio_publicacion" required>
+        </div>
+        <div class="form-group full">
+            <label>Categorías</label><br>
+            {% for c in categorias %}
+            <label><input type="checkbox" name="categorias" value="{{ c.id }}"> {{ c.nombre }}</label><br>
+            {% endfor %}
+        </div>
+        <div class="form-actions">
+            <button type="submit" class="btn primary">Guardar</button>
+            <a href="{% url 'dashboard' %}" class="btn">Cancelar</a>
+        </div>
+    </form>
+</div>
+{% endblock %}

@@ -1,0 +1,37 @@
+{% extends 'web/base.html' %}
+{% block title %}Dashboard{% endblock %}
+{% block content %}
+<header class="page-header">
+    <h1>Panel de Biblioteca</h1>
+    <p class="subtitle">Bienvenido, gestiona toda la información desde aquí</p>
+</header>
+
+<section class="cards-grid">
+    <div class="card stat">
+        <h3>Libros</h3>
+        <p class="stat-number">{{ total_libros }}</p>
+        <span class="stat-desc">registrados</span>
+    </div>
+    <div class="card stat">
+        <h3>Estudiantes</h3>
+        <p class="stat-number">{{ total_estudiantes }}</p>
+        <span class="stat-desc">registrados</span>
+    </div>
+    <div class="card stat">
+        <h3>Préstamos</h3>
+        <p class="stat-number">{{ prestamos_activos }}</p>
+        <span class="stat-desc">realizados</span>
+    </div>
+</section>
+
+<section class="card table-card">
+    <div class="card-header">
+        <h2>Acciones Rápidas</h2>
+    </div>
+    <div class="quick-actions">
+        <a href="{% url 'prestamo_create' %}" class="btn primary">➕ Nuevo préstamo</a>
+        <a href="{% url 'book_create' %}" class="btn">➕ Nuevo libro</a>
+        <a href="{% url 'student_create' %}" class="btn">➕ Nuevo estudiante</a>
+    </div>
+</section>
+{% endblock %}

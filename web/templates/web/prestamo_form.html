@@ -1,0 +1,40 @@
+{% extends 'web/base.html' %}
+{% block title %}Registrar Préstamo{% endblock %}
+{% block content %}
+<div class="card form-card">
+    <h2>Registrar Préstamo</h2>
+    <form method="post" class="form-grid">
+        {% csrf_token %}
+        <div class="form-group">
+            <label>Estudiante</label>
+            <select name="estudiante" required>
+                <option value="">-- Selecciona --</option>
+                {% for est in estudiantes %}
+                <option value="{{ est.id }}">{{ est.apellidos }}, {{ est.nombres }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="form-group">
+            <label>Ejemplar</label>
+            <select name="ejemplar" required>
+                <option value="">-- Selecciona --</option>
+                {% for ej in ejemplares %}
+                <option value="{{ ej.id }}">{{ ej.libro_padre.titulo }} ({{ ej.codigo_isbn }})</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="form-group">
+            <label>Fecha Fin</label>
+            <input type="date" name="fecha_fin" required>
+        </div>
+        <div class="form-group full">
+            <label>Comentarios</label>
+            <input type="text" name="comentarios" placeholder="Observaciones">
+        </div>
+        <div class="form-actions">
+            <button type="submit" class="btn primary">Guardar</button>
+            <a href="{% url 'dashboard' %}" class="btn">Cancelar</a>
+        </div>
+    </form>
+</div>
+{% endblock %}
