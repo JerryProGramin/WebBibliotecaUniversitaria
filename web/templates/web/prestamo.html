@@ -1,0 +1,103 @@
+{% extends 'web/base.html' %}
+
+{% block title %}Préstamos - Biblioteca Universitaria{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-12">
+        <h1 class="mb-4">Gestión de Préstamos</h1>
+    </div>
+</div>
+
+<div class="row mb-3 g-2 align-items-end">
+    <div class="col-md-8">
+        <label class="form-label" for="filtro-prestamos">Filtro</label>
+        <input id="filtro-prestamos" type="text" class="form-control" placeholder="Buscar por alumno, libro, estado...">
+    </div>
+    <div class="col-md-4 text-md-end">
+        <button class="btn btn-info text-white" data-bs-toggle="modal" data-bs-target="#addPrestamoModal">
+            <i class="bi bi-plus-circle"></i> Registrar Nuevo Préstamo
+        </button>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="mb-0">Lista de Préstamos</h5>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-striped table-hover">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Alumno</th>
+                                <th>Libro</th>
+                                <th>Fecha Préstamo</th>
+                                <th>Fecha Devolución</th>
+                                <th>Estado</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td colspan="7" class="text-center text-muted">
+                                    No hay préstamos registrados. Haga clic en "Registrar Nuevo Préstamo" para comenzar.
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal para agregar préstamo -->
+<div class="modal fade" id="addPrestamoModal" tabindex="-1" aria-labelledby="addPrestamoModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addPrestamoModalLabel">Registrar Nuevo Préstamo</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="mb-3">
+                        <label for="alumno" class="form-label">Alumno</label>
+                        <select class="form-select" id="alumno" required>
+                            <option value="">Seleccione un alumno...</option>
+                            <!-- Los alumnos se cargarán dinámicamente -->
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="libro" class="form-label">Libro</label>
+                        <select class="form-select" id="libro" required>
+                            <option value="">Seleccione un libro...</option>
+                            <!-- Los libros se cargarán dinámicamente -->
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="fecha_prestamo" class="form-label">Fecha de Préstamo</label>
+                        <input type="date" class="form-control" id="fecha_prestamo" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="fecha_devolucion" class="form-label">Fecha de Devolución Esperada</label>
+                        <input type="date" class="form-control" id="fecha_devolucion" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="observaciones" class="form-label">Observaciones</label>
+                        <textarea class="form-control" id="observaciones" rows="3"></textarea>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn btn-info text-white">Registrar Préstamo</button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,109 @@
+{% extends 'web/base.html' %}
+
+{% block title %}Dashboard - Biblioteca Universitaria{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-12">
+        <h1 class="mb-4">Dashboard - Biblioteca Universitaria</h1>
+    </div>
+</div>
+
+<div class="row" id="cards">
+    <div class="col-md-4 mb-4">
+        <div class="card border-primary">
+            <div class="card-body">
+                <h5 class="card-title">Libros</h5>
+                <p class="display-6 mb-0" id="numLibros">-</p>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-4 mb-4">
+        <div class="card border-success">
+            <div class="card-body">
+                <h5 class="card-title">Alumnos</h5>
+                <p class="display-6 mb-0" id="numAlumnos">-</p>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-4 mb-4">
+        <div class="card border-info">
+            <div class="card-body">
+                <h5 class="card-title">Préstamos</h5>
+                <p class="display-6 mb-0" id="numPrestamos">-</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row mt-2">
+    <div class="col-12 col-lg-8 mb-4">
+        <div class="card h-100">
+            <div class="card-header">
+                Préstamos por mes
+            </div>
+            <div class="card-body">
+                <canvas id="chartPrestamosMes" height="120"></canvas>
+            </div>
+        </div>
+    </div>
+    <div class="col-12 col-lg-4 mb-4">
+        <div class="card h-100">
+            <div class="card-header">Resumen</div>
+            <div class="card-body">
+                <ul class="mb-0 small">
+                    <li>Libros: <span id="sumLibros">-</span></li>
+                    <li>Alumnos: <span id="sumAlumnos">-</span></li>
+                    <li>Préstamos: <span id="sumPrestamos">-</span></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_scripts %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+<script>
+(async function(){
+  try {
+    const resp = await fetch('{% url 'dashboard_metrics' %}', { headers: { 'X-Requested-With': 'XMLHttpRequest' } });
+    const data = await resp.json();
+    // Cards
+    document.getElementById('numLibros').textContent = data.cards.libros;
+    document.getElementById('numAlumnos').textContent = data.cards.alumnos;
+    document.getElementById('numPrestamos').textContent = data.cards.prestamos;
+    document.getElementById('sumLibros').textContent = data.cards.libros;
+    document.getElementById('sumAlumnos').textContent = data.cards.alumnos;
+    document.getElementById('sumPrestamos').textContent = data.cards.prestamos;
+
+    // Chart: préstamos por mes
+    const ctx = document.getElementById('chartPrestamosMes');
+    new Chart(ctx, {
+      type: 'bar',
+      data: {
+        labels: data.prestamos_por_mes.labels,
+        datasets: [{
+          label: 'Préstamos',
+          data: data.prestamos_por_mes.values,
+          backgroundColor: 'rgba(13,110,253,0.5)',
+          borderColor: 'rgba(13,110,253,1)',
+          borderWidth: 1
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        scales: {
+          y: { beginAtZero: true, ticks: { precision:0 } }
+        }
+      }
+    });
+  } catch (e) {
+    console.error('Error cargando métricas del dashboard', e);
+  }
+})();
+</script>
+{% endblock %}
