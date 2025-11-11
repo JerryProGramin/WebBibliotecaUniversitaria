@@ -1,0 +1,29 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Dashboard</title>
+    <link rel="stylesheet" href="{% static 'web/css/style.css' %}">
+</head>
+
+<body>
+    <div class="layout">
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <h2>📚 Biblioteca</h2>
+            </div>
+            <nav class="sidebar-nav">
+                <a href="/" class="nav-item active">🏠 Dashboard</a>
+                <a href="#" class="nav-item logout">🚪 Cerrar sesión</a>
+            </nav>
+        </aside>
+        <main class="main-content">
+            <h1>Bienvenido al panel administrativo</h1>
+            <p>Aquí podrás gestionar préstamos, libros y estudiantes.</p>
+        </main>
+    </div>
+</body>
+
+</html>

@@ -31,16 +31,49 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    # core de django
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+
+    # para login social
+    'django.contrib.sites',      # <- necesario para allauth
+
+    # terceros
     'rest_framework',
-    'web',
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
+    # proveedores sociales:
+    'allauth.socialaccount.providers.google',
+    'allauth.socialaccount.providers.github',
+    'allauth.socialaccount.providers.facebook',
+    'allauth.socialaccount.providers.linkedin_oauth2',
+    'rest_framework.authtoken',
+
+    # dj-rest-auth para exponer la API de login
+    'dj_rest_auth',
+    'dj_rest_auth.registration',
+
+    # tuyas
+    'library',
+    'accounts',
     'api',
+    'web',
 ]
+SITE_ID = 1
+LOGIN_REDIRECT_URL = '/'
+LOGOUT_REDIRECT_URL = '/login/'
+
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.TokenAuthentication',
+    ],
+}
 
 
 MIDDLEWARE = [
@@ -51,6 +84,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'allauth.account.middleware.AccountMiddleware',
 ]
 
 ROOT_URLCONF = 'config.urls'
@@ -81,9 +115,9 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'bd_biblioteca_uni',      # el nombre que creaste
         'USER': 'root',
-        'PASSWORD': '',
+        'PASSWORD': 'sanchin*2005',
         'HOST': 'localhost',           # o el host de tu servidor
-        'PORT': '3306',                # el puerto por defecto
+        'PORT': '3307',                # el puerto por defecto
         'OPTIONS': {
             'init_command': "SET sql_mode='STRICT_TRANS_TABLES'"
         }
@@ -127,6 +161,13 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/5.2/howto/static-files/
 
 STATIC_URL = 'static/'
+
+from pathlib import Path
+BASE_DIR = Path(__file__).resolve().parent.parent
+
+STATICFILES_DIRS = [
+    BASE_DIR / 'web' / 'static',
+]
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
