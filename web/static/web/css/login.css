@@ -39,7 +39,8 @@
     left: 50%;
     transform: translateX(-50%);
     overflow: hidden;
-    padding: 40px;
+    padding: 2.5%;
+    margin: 60px 0;
 }
 
 /* títulos pegados a las esquinas del cuadro blanco */
@@ -170,6 +171,7 @@
 .social-buttons {
     display: flex;
     gap: .4rem;
+    justify-content: center;
 }
 
 .social-btn {
@@ -227,6 +229,24 @@
     color: #0a66c2;
     border-color: #bdd7f4;
 }
+
+.form-block {
+    width: 100%;
+}
+
+.hidden {
+    display: none;
+}
+
+.btn-link {
+    background: none;
+    border: none;
+    color: #7b1138;
+    text-decoration: underline;
+    cursor: pointer;
+    font-size: .8rem;
+}
+
 
 /* responsive */
 @media (max-width: 1080px) {
