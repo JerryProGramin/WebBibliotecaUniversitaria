@@ -23,13 +23,13 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-1b%-&j-i@wnfn6*#kfi5b^+)nt7ew^5xacbqhmw33_%1kwp#n5'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = os.environ.get('DEBUG', 'False') == 'True'
+#DEBUG = os.environ.get('DEBUG', 'False') == 'True'
 
-#DEBUG = True
+DEBUG = True
 
-ALLOWED_HOSTS = ['webbibliotecauniversitaria.onrender.com']
+#ALLOWED_HOSTS = ['webbibliotecauniversitaria.onrender.com']
 
-#ALLOWED_HOSTS = []
+ALLOWED_HOSTS = []
 
 # Application definition
 
@@ -65,7 +65,7 @@ INSTALLED_APPS = [
     'api',
     'web',
 ]
-SITE_ID = 1
+SITE_ID = 3
 LOGIN_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL = '/login/'
 
