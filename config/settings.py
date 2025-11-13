@@ -25,8 +25,11 @@ SECRET_KEY = 'django-insecure-1b%-&j-i@wnfn6*#kfi5b^+)nt7ew^5xacbqhmw33_%1kwp#n5
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.environ.get('DEBUG', 'False') == 'True'
 
+#DEBUG = True
+
 ALLOWED_HOSTS = ['webbibliotecauniversitaria.onrender.com']
 
+#ALLOWED_HOSTS = []
 
 # Application definition
 
@@ -50,8 +53,6 @@ INSTALLED_APPS = [
     # proveedores sociales:
     'allauth.socialaccount.providers.google',
     'allauth.socialaccount.providers.github',
-    'allauth.socialaccount.providers.facebook',
-    'allauth.socialaccount.providers.linkedin_oauth2',
     'rest_framework.authtoken',
 
     # dj-rest-auth para exponer la API de login
@@ -78,10 +79,15 @@ ACCOUNT_EMAIL_VERIFICATION = "none"
 ACCOUNT_EMAIL_REQUIRED = True  
 
 REST_FRAMEWORK = {
-    'DEFAULT_AUTHENTICATION_CLASSES': [
-        'rest_framework.authentication.TokenAuthentication',
+    "DEFAULT_AUTHENTICATION_CLASSES": [
+        "rest_framework.authentication.SessionAuthentication",
+        "rest_framework.authentication.BasicAuthentication",
+    ],
+    "DEFAULT_PERMISSION_CLASSES": [
+        "rest_framework.permissions.IsAuthenticated",
     ],
 }
+
 
 
 MIDDLEWARE = [

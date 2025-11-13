@@ -1,0 +1,77 @@
+{% extends 'web/base.html' %}
+{% load static %}
+
+{% block title %}Préstamos - Biblioteca{% endblock %}
+{% block header_title %}Préstamos{% endblock %}
+
+{% block content %}
+
+<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem;">
+    <h2 style="margin:0;color:#7b1138;">Listado de préstamos</h2>
+    <button class="btn-main" id="btn-add-loan">Nuevo préstamo</button>
+</div>
+
+<table>
+    <thead>
+        <tr>
+            <th>Estudiante</th>
+            <th>Libro</th>
+            <th>Código</th>
+            <th>Fecha inicio</th>
+            <th>Fecha fin</th>
+            <th>Comentarios</th>
+            <th style="width:150px;">Acciones</th>
+        </tr>
+    </thead>
+    <tbody id="loans-tbody">
+        <!-- JS llena aquí -->
+    </tbody>
+</table>
+
+<p class="error-msg" id="loans-global-error" style="display:none;"></p>
+
+<!-- MODAL PRÉSTAMO -->
+<div class="modal-backdrop" id="loan-modal">
+    <div class="modal-card">
+        <h2 id="loan-modal-title">Nuevo préstamo</h2>
+
+        <form id="loan-form">
+            {% csrf_token %}
+            <input type="hidden" id="loan-id">
+
+            <label>Estudiante</label>
+            <select id="inp-loan-student" class="login-input" required>
+                <option value="">-- Selecciona estudiante --</option>
+                <!-- JS llena -->
+            </select>
+
+            <label>Libro</label>
+            <select id="inp-loan-bookdetail" class="login-input" required>
+                <option value="">-- Selecciona libro disponible --</option>
+                <!-- JS llena solo disponibles -->
+            </select>
+
+            <label>Fecha inicio</label>
+            <input type="date" id="inp-loan-start" class="login-input" required>
+
+            <label>Fecha fin</label>
+            <input type="date" id="inp-loan-end" class="login-input" required>
+
+            <label>Comentarios</label>
+            <input type="text" id="inp-loan-comments" class="login-input" placeholder="Opcional">
+
+            <p class="error-msg" id="loan-form-error" style="display:none;"></p>
+
+            <div class="modal-actions">
+                <button type="button" class="btn-secondary" id="btn-loan-cancel">Cancelar</button>
+                <button type="submit" class="btn-main">Guardar</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'web/js/loans.js' %}"></script>
+{% endblock %}

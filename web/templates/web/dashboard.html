@@ -1,96 +1,141 @@
+{% extends 'web/base.html' %}
 {% load static %}
-<!DOCTYPE html>
-<html lang="es">
 
-<head>
-    <meta charset="UTF-8">
-    <title>Panel de Biblioteca</title>
-    <link rel="stylesheet" href="{% static 'web/css/dashboard.css' %}">
-</head>
+{% block title %}Panel - Biblioteca{% endblock %}
+{% block header_title %}Panel de Biblioteca{% endblock %}
 
-<body class="dash-body">
-    <div class="dash-layout">
-        <!-- SIDEBAR -->
-        <aside class="dash-sidebar">
-            <div class="sb-logo">
-                <img src="{% static 'web/img/logo-biblio.png' %}" alt="logo" class="sb-logo-img">
-                <span class="sb-title">UNIVERSIDAD TECNOLÓGICA</span>
-            </div>
+{% block content %}
 
-            <div class="sb-user">
-                <div class="sb-user-icon">👤</div>
-                <div class="sb-user-data">
-                    <p class="sb-user-name">
-                        {% if user.is_authenticated %}
-                        {{ user.get_full_name|default:user.username }}
-                        {% else %}
-                        Personal Biblioteca
-                        {% endif %}
-                    </p>
-                    <p class="sb-user-mail">
-                        {% if user.is_authenticated %}
-                        {{ user.email }}
-                        {% else %}
-                        biblioteca@utx.edu
-                        {% endif %}
-                    </p>
-                </div>
-            </div>
-
-            <nav class="sb-menu">
-                <a href="{% url 'dashboard' %}" class="sb-link active">INICIO</a>
-                <a href="#" class="sb-link">ALUMNOS</a>
-                <a href="#" class="sb-link">PRESTAMOS</a>
-                <a href="#" class="sb-link">LIBROS</a>
-            </nav>
-
-            <a href="{% url 'logout' %}" class="sb-logout">Cerrar sesión</a>
-        </aside>
-
-        <!-- CONTENIDO -->
-        <main class="dash-main">
-            <header class="dash-header">
-                <h1>Biblioteca</h1>
-                <button class="menu-btn">
-                    <span></span><span></span><span></span>
-                </button>
-            </header>
-
-            <section class="dash-cards">
-                <div class="dash-card">
-                    <p class="dc-number">{{ libros_disponibles|default:"0" }}</p>
-                    <p class="dc-label">Libros disponibles</p>
-                </div>
-                <div class="dash-card">
-                    <p class="dc-number">{{ libros_prestados|default:"0" }}</p>
-                    <p class="dc-label">Libros prestados</p>
-                </div>
-                <div class="dash-card">
-                    <p class="dc-number">{{ libros_espera|default:"0" }}</p>
-                    <p class="dc-label">Libros en espera</p>
-                </div>
-            </section>
-
-            <section class="dash-charts">
-                <div class="chart-box">
-                    <h2>CANTIDAD DE LIBROS PRESTADOS POR FECHA</h2>
-                    <div class="bars">
-                        <div class="bar" style="height: 35%;"></div>
-                        <div class="bar" style="height: 80%;"></div>
-                        <div class="bar" style="height: 60%;"></div>
-                    </div>
-                </div>
-                <div class="chart-box">
-                    <h2>CANTIDAD DE PRÉSTAMOS POR FACULTAD</h2>
-                    <div class="bars">
-                        <div class="bar" style="height: 75%;"></div>
-                        <div class="bar" style="height: 35%;"></div>
-                        <div class="bar" style="height: 55%;"></div>
-                    </div>
-                </div>
-            </section>
-        </main>
+<!-- TARJETAS RESUMEN -->
+<div class="cards-row">
+    <div class="info-card">
+        <span class="card-label">Estudiantes</span>
+        <span class="card-value">{{ total_students }}</span>
     </div>
-</body>
+    <div class="info-card">
+        <span class="card-label">Títulos de libros</span>
+        <span class="card-value">{{ total_books }}</span>
+    </div>
+    <div class="info-card">
+        <span class="card-label">Ejemplares físicos</span>
+        <span class="card-value">{{ total_copies }}</span>
+    </div>
 
-</html>
+    <div class="info-card">
+        <span class="card-label">Préstamos activos</span>
+        <span class="card-value">{{ active_loans }}</span>
+    </div>
+</div>
+
+<!-- GRÁFICOS -->
+<div class="charts-row">
+    <div class="chart-card">
+        <h3>Préstamos últimos meses</h3>
+        <canvas id="loansByMonthChart"></canvas>
+    </div>
+
+    <div class="chart-card">
+        <h3>Libros por categoría</h3>
+        <canvas id="booksByCategoryChart"></canvas>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block extra_css %}
+<style>
+    .cards-row {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+        gap: 1.2rem;
+        margin-bottom: 1.8rem;
+    }
+
+    .info-card {
+        position: relative;
+        background: linear-gradient(135deg, #ffffff 0%, #ffe7ef 100%);
+        border-radius: 20px;
+        padding: 1.1rem 1.3rem 1.2rem;
+        box-shadow: 0 14px 30px rgba(0, 0, 0, 0.08);
+        overflow: hidden;
+    }
+
+    .info-card::after {
+        content: "";
+        position: absolute;
+        right: -25px;
+        top: -25px;
+        width: 80px;
+        height: 80px;
+        border-radius: 50%;
+        background: rgba(123, 17, 56, 0.2);
+    }
+
+    .card-label {
+        font-size: .85rem;
+        color: #7b1138;
+        font-weight: 600;
+        letter-spacing: .03em;
+        text-transform: uppercase;
+    }
+
+    .card-value {
+        margin-top: .35rem;
+        font-size: 2rem;
+        font-weight: 800;
+        color: #2b2b2b;
+    }
+
+    .charts-row {
+        display: grid;
+        grid-template-columns: 2fr 1.4fr;
+        gap: 1.4rem;
+    }
+
+    .chart-card {
+        background: #fff;
+        border-radius: 20px;
+        padding: 1rem 1.2rem 1.5rem;
+        box-shadow: 0 12px 28px rgba(0, 0, 0, 0.06);
+        min-height: 260px;
+    }
+
+    .chart-card h3 {
+        margin: 0 0 .9rem;
+        font-size: 1rem;
+        color: #7b1138;
+        font-weight: 600;
+    }
+
+    .chart-card canvas {
+        width: 100% !important;
+        height: 220px !important;
+    }
+
+    @media (max-width: 900px) {
+        .charts-row {
+            grid-template-columns: 1fr;
+        }
+    }
+</style>
+{% endblock %}
+
+
+{% block extra_js %}
+<!-- Chart.js desde CDN -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<!-- Pasar los datos de Django a JS -->
+<script src="{% static 'web/js/dashboard.js' %}"></script>
+<script>
+    window.DASHBOARD_DATA = {
+        catLabels: JSON.parse('{{ cat_labels_json|default:"[]"|escapejs }}'),
+        catCounts: JSON.parse('{{ cat_counts_json|default:"[]"|escapejs }}'),
+        monthLabels: JSON.parse('{{ month_labels_json|default:"[]"|escapejs }}'),
+        monthCounts: JSON.parse('{{ month_counts_json|default:"[]"|escapejs }}'),
+    };
+</script>
+
+
+<!-- JS del dashboard -->
+{% endblock %}

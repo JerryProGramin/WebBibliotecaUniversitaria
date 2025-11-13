@@ -1,0 +1,73 @@
+{% extends 'web/base.html' %}
+{% load static %}
+
+{% block title %}Libros - Biblioteca{% endblock %}
+{% block header_title %}Libros{% endblock %}
+
+{% block content %}
+
+<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem;">
+    <h2 style="margin:0;color:#7b1138;">Listado de libros</h2>
+    <button class="btn-main" id="btn-add-book">Nuevo libro</button>
+</div>
+
+<table>
+    <thead>
+        <tr>
+            <th>Título</th>
+            <th>Autor</th>
+            <th>Año</th>
+            <th>Categorías</th>
+            <th style="width:160px;">Acciones</th>
+        </tr>
+    </thead>
+    <tbody id="books-tbody">
+        <!-- JS llena aquí -->
+    </tbody>
+</table>
+
+<p class="error-msg" id="books-global-error" style="display:none;"></p>
+
+<!-- MODAL -->
+<div class="modal-backdrop" id="book-modal">
+    <div class="modal-card">
+        <h2 id="book-modal-title">Nuevo libro</h2>
+
+        <form id="book-form">
+            {% csrf_token %}
+            <input type="hidden" id="book-id">
+
+            <label>Título</label>
+            <input type="text" id="inp-book-titulo" class="login-input" required>
+
+            <label>Autor</label>
+            <select id="inp-book-autor" class="login-input" required>
+                <option value="">-- Selecciona autor --</option>
+                <!-- JS llenará options -->
+            </select>
+
+            <label>Año de publicación</label>
+            <input type="number" id="inp-book-anio" class="login-input" min="1900" max="2100" required>
+
+            <label>Categorías</label>
+            <select id="inp-book-categories" class="login-input" multiple size="5">
+                <!-- JS llenará options -->
+            </select>
+            <small style="font-size:.75rem;color:#666;">Mantén presionada la tecla Ctrl (o Cmd en Mac) para elegir
+                varias.</small>
+
+            <p class="error-msg" id="book-form-error" style="display:none;"></p>
+
+            <div class="modal-actions">
+                <button type="button" class="btn-secondary" id="btn-book-cancel">Cancelar</button>
+                <button type="submit" class="btn-main">Guardar</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'web/js/books.js' %}"></script>
+{% endblock %}

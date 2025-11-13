@@ -1,0 +1,61 @@
+{% extends 'web/base.html' %}
+{% load static %}
+
+{% block title %}Alumnos - Biblioteca{% endblock %}
+{% block header_title %}Alumnos{% endblock %}
+
+{% block content %}
+
+<div class="students-header" style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem;">
+    <h2 style="margin:0;color:#7b1138;">Listado de estudiantes</h2>
+    <button class="btn-main" id="btn-add-student">Nuevo estudiante</button>
+</div>
+
+<table>
+    <thead>
+        <tr>
+            <th>Nombres</th>
+            <th>Apellidos</th>
+            <th>DNI</th>
+            <th style="width:150px;">Acciones</th>
+        </tr>
+    </thead>
+    <tbody id="students-tbody">
+        <!-- filas por JS -->
+    </tbody>
+</table>
+
+<p class="error-msg" id="global-error" style="display:none;"></p>
+
+<!-- MODAL -->
+<div class="modal-backdrop" id="student-modal">
+    <div class="modal-card">
+        <h2 id="modal-title">Nuevo estudiante</h2>
+        <form id="student-form">
+            {% csrf_token %}
+            <input type="hidden" id="student-id">
+
+            <label>Nombres</label>
+            <input type="text" id="inp-nombres" required>
+
+            <label>Apellidos</label>
+            <input type="text" id="inp-apellidos" required>
+
+            <label>DNI</label>
+            <input type="text" id="inp-dni" maxlength="8" required>
+
+            <p class="error-msg" id="form-error" style="display:none;"></p>
+
+            <div class="modal-actions">
+                <button type="button" class="btn-secondary" id="btn-cancel">Cancelar</button>
+                <button type="submit" class="btn-main" id="btn-save">Guardar</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'web/js/students.js' %}"></script>
+{% endblock %}

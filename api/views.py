@@ -24,41 +24,43 @@ class TbUserViewSet(viewsets.ModelViewSet):
     serializer_class = TbUserSerializer
     permission_classes = [IsLibraryStaff]
 
-
-class AuthorViewSet(viewsets.ModelViewSet):
-    queryset = tb_author.objects.all()
-    serializer_class = AuthorSerializer
-    permission_classes = [IsLibraryStaff]
-
-
-class CategoryViewSet(viewsets.ModelViewSet):
-    queryset = tb_category.objects.all()
-    serializer_class = CategorySerializer
-    permission_classes = [IsLibraryStaff]
-
-
-class BookViewSet(viewsets.ModelViewSet):
-    queryset = tb_book.objects.all()
-    serializer_class = BookSerializer
-    permission_classes = [IsLibraryStaff]
-
-
 class BookDetailViewSet(viewsets.ModelViewSet):
-    queryset = tb_book_detail.objects.all()
+    queryset = tb_book_detail.objects.all().select_related("libro_padre")
     serializer_class = BookDetailSerializer
-    permission_classes = [IsLibraryStaff]
-
+    permission_classes = [permissions.IsAuthenticated]
 
 class StudentViewSet(viewsets.ModelViewSet):
-    queryset = tb_student.objects.all()
+    queryset = tb_student.objects.all().order_by('apellidos', 'nombres')
     serializer_class = StudentSerializer
-    permission_classes = [IsLibraryStaff]
+    permission_classes = [permissions.IsAuthenticated]  # solo logueados
 
+class CategoryViewSet(viewsets.ModelViewSet):
+    queryset = tb_category.objects.all().order_by("id")
+    serializer_class = CategorySerializer
+    permission_classes = [permissions.IsAuthenticated]
+
+class AuthorViewSet(viewsets.ModelViewSet):
+    queryset = tb_author.objects.all().order_by("id")
+    serializer_class = AuthorSerializer
+    permission_classes = [permissions.IsAuthenticated]
+
+class BookViewSet(viewsets.ModelViewSet):
+    queryset = tb_book.objects.all().select_related("autor").prefetch_related("category")
+    serializer_class = BookSerializer
+    permission_classes = [permissions.IsAuthenticated]
 
 class LoanViewSet(viewsets.ModelViewSet):
-    queryset = tb_loan.objects.all()
+    queryset = tb_loan.objects.all().select_related("estudiante", "libro", "libro__libro_padre")
     serializer_class = LoanSerializer
-    permission_classes = [IsLibraryStaff]
+    permission_classes = [permissions.IsAuthenticated]
+
+    def perform_destroy(self, instance):
+        # al eliminar el préstamo, liberar el ejemplar
+        libro = instance.libro
+        super().perform_destroy(instance)
+        if libro:
+            libro.estado_prestamo = False
+            libro.save(update_fields=["estado_prestamo"])
 
 
 class StaffRoleViewSet(viewsets.ModelViewSet):

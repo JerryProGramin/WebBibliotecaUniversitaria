@@ -1,0 +1,50 @@
+{% extends 'web/base.html' %}
+{% load static %}
+
+{% block title %}Autores - Biblioteca{% endblock %}
+{% block header_title %}Autores{% endblock %}
+
+{% block content %}
+<div class="students-header" style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem;">
+    <h2 style="margin:0;color:#7b1138;">Listado de autores</h2>
+    <button class="btn-main" id="btn-add-author">Nuevo autor</button>
+</div>
+
+<table>
+    <thead>
+        <tr>
+            <th>Nombre</th>
+            <th style="width:150px;">Acciones</th>
+        </tr>
+    </thead>
+    <tbody id="authors-tbody">
+        <!-- JS -->
+    </tbody>
+</table>
+
+<p class="error-msg" id="auth-global-error" style="display:none;"></p>
+
+<div class="modal-backdrop" id="author-modal">
+    <div class="modal-card">
+        <h2 id="auth-modal-title">Nuevo autor</h2>
+        <form id="author-form">
+            {% csrf_token %}
+            <input type="hidden" id="author-id">
+
+            <label>Nombre</label>
+            <input type="text" id="inp-auth-nombre" required>
+
+            <p class="error-msg" id="auth-form-error" style="display:none;"></p>
+
+            <div class="modal-actions">
+                <button type="button" class="btn-secondary" id="btn-auth-cancel">Cancelar</button>
+                <button type="submit" class="btn-main" id="btn-auth-save">Guardar</button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'web/js/authors.js' %}"></script>
+{% endblock %}

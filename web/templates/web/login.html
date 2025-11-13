@@ -36,7 +36,7 @@
             <!-- LADO DERECHO (formularios) -->
             <div class="login-right">
                 <!-- FORM LOGIN -->
-                <div class="form-block" id="login-form-block">
+                <div class="form-block {% if register_errors %}hidden{% endif %}" id="login-form-block">
                     <h1 class="login-title">Bienvenida/o</h1>
                     <form method="post" class="login-form-modern">
                         {% csrf_token %}
@@ -55,13 +55,6 @@
                         <div class="login-actions">
                             <button type="submit" class="btn-main">Iniciar Sesión</button>
                             <div class="social-buttons">
-                                <!-- Facebook -->
-                                <a href="/accounts/facebook/login/" class="social-btn fb" title="Facebook">
-                                    <svg viewBox="0 0 24 24" class="icon">
-                                        <path fill="currentColor"
-                                            d="M13 20v-6h2.5l.5-3H13V8.5C13 7.57 13.28 7 14.7 7H16V4.14C15.3 4.05 14.6 4 13.9 4 11.4 4 9.7 5.5 9.7 8.2V11H7v3h2.7v6h3.3Z" />
-                                    </svg>
-                                </a>
                                 <!-- Google -->
                                 <a href="/accounts/google/login/" class="social-btn google" title="Google">
                                     <svg viewBox="0 0 24 24" class="icon">
@@ -76,13 +69,6 @@
                                             d="M12 .5C5.648.5.5 5.648.5 12c0 5.086 3.292 9.387 7.863 10.914.575.104.786-.25.786-.556 0-.274-.01-1-.015-1.963-3.198.695-3.874-1.542-3.874-1.542-.523-1.33-1.277-1.685-1.277-1.685-1.044-.714.079-.7.079-.7 1.155.082 1.763 1.187 1.763 1.187 1.027 1.76 2.695 1.252 3.35.957.104-.744.402-1.252.73-1.54-2.553-.29-5.235-1.277-5.235-5.68 0-1.255.448-2.282 1.185-3.086-.119-.29-.513-1.46.113-3.046 0 0 .967-.31 3.168 1.18a10.95 10.95 0 0 1 2.884-.389c.978.005 1.963.133 2.884.389 2.201-1.49 3.166-1.18 3.166-1.18.628 1.586.234 2.756.115 3.046.739.804 1.183 1.831 1.183 3.086 0 4.418-2.688 5.387-5.252 5.672.414.357.783 1.07.783 2.157 0 1.557-.014 2.812-.014 3.193 0 .309.207.667.793.553C20.213 21.383 23.5 17.084 23.5 12 23.5 5.648 18.352.5 12 .5Z" />
                                     </svg>
                                 </a>
-                                <!-- LinkedIn -->
-                                <a href="/accounts/linkedin_oauth2/login/" class="social-btn linkedin" title="LinkedIn">
-                                    <svg viewBox="0 0 24 24" class="icon">
-                                        <path fill="currentColor"
-                                            d="M19 3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2ZM8.339 18.338H5.667V9.75h2.672ZM7.003 8.673a1.549 1.549 0 1 1 .001-3.097 1.549 1.549 0 0 1-.001 3.097Zm11.335 9.665h-2.667v-4.17c0-.995-.019-2.276-1.388-2.276-1.389 0-1.602 1.085-1.602 2.205v4.241h-2.667V9.75h2.56v1.17h.036c.357-.675 1.228-1.387 2.53-1.387 2.706 0 3.206 1.781 3.206 4.099Z" />
-                                    </svg>
-                                </a>
                             </div>
                         </div>
                     </form>
@@ -90,7 +76,7 @@
                 </div>
 
                 <!-- FORM REGISTRO -->
-                <div class="form-block {% if register_errors %}{% else %}hidden{% endif %}" id="register-form-block">
+                <div class="form-block {% if not register_errors %}hidden{% endif %}" id="register-form-block">
                     <h1 class="login-title">Crear cuenta</h1>
                     <form method="post" class="login-form-modern">
                         {% csrf_token %}
@@ -145,12 +131,6 @@
 
                         <!-- redes sociales (opcional) -->
                         <div class="social-buttons">
-                            <a href="/accounts/facebook/login/" class="social-btn fb" title="Facebook">
-                                <svg viewBox="0 0 24 24" class="icon">
-                                    <path fill="currentColor"
-                                        d="M13 20v-6h2.5l.5-3H13V8.5C13 7.57 13.28 7 14.7 7H16V4.14C15.3 4.05 14.6 4 13.9 4 11.4 4 9.7 5.5 9.7 8.2V11H7v3h2.7v6h3.3Z" />
-                                </svg>
-                            </a>
                             <a href="/accounts/google/login/" class="social-btn google" title="Google">
                                 <svg viewBox="0 0 24 24" class="icon">
                                     <path fill="#EA4335"
@@ -161,12 +141,6 @@
                                 <svg viewBox="0 0 24 24" class="icon">
                                     <path fill="currentColor"
                                         d="M12 .5C5.648.5.5 5.648.5 12c0 5.086 3.292 9.387 7.863 10.914.575.104.786-.25.786-.556 0-.274-.01-1-.015-1.963-3.198.695-3.874-1.542-3.874-1.542-.523-1.33-1.277-1.685-1.277-1.685-1.044-.714.079-.7.079-.7 1.155.082 1.763 1.187 1.763 1.187 1.027 1.76 2.695 1.252 3.35.957.104-.744.402-1.252.73-1.54-2.553-.29-5.235-1.277-5.235-5.68 0-1.255.448-2.282 1.185-3.086-.119-.29-.513-1.46.113-3.046 0 0 .967-.31 3.168 1.18a10.95 10.95 0 0 1 2.884-.389c.978.005 1.963.133 2.884.389 2.201-1.49 3.166-1.18 3.166-1.18.628 1.586.234 2.756.115 3.046.739.804 1.183 1.831 1.183 3.086 0 4.418-2.688 5.387-5.252 5.672.414.357.783 1.07.783 2.157 0 1.557-.014 2.812-.014 3.193 0 .309.207.667.793.553C20.213 21.383 23.5 17.084 23.5 12 23.5 5.648 18.352.5 12 .5Z" />
-                                </svg>
-                            </a>
-                            <a href="/accounts/linkedin_oauth2/login/" class="social-btn linkedin" title="LinkedIn">
-                                <svg viewBox="0 0 24 24" class="icon">
-                                    <path fill="currentColor"
-                                        d="M19 3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2ZM8.339 18.338H5.667V9.75h2.672ZM7.003 8.673a1.549 1.549 0 1 1 .001-3.097 1.549 1.549 0 0 1-.001 3.097Zm11.335 9.665h-2.667v-4.17c0-.995-.019-2.276-1.388-2.276-1.389 0-1.602 1.085-1.602 2.205v4.241h-2.667V9.75h2.56v1.17h.036c.357-.675 1.228-1.387 2.53-1.387 2.706 0 3.206 1.781 3.206 4.099Z" />
                                 </svg>
                             </a>
                         </div>
