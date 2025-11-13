@@ -63,19 +63,34 @@
                                     </svg>
                                 </a>
                                 <!-- Google -->
-                                <a href="/accounts/google/login/" class="social-btn google" title="Google">
+                                <!-- <a href="/accounts/google/login/" class="social-btn google" title="Google">
                                     <svg viewBox="0 0 24 24" class="icon">
                                         <path fill="#EA4335"
                                             d="M12 11.988h9.428c.086.471.142.942.142 1.571C21.57 18.457 17.829 22 12 22 6.486 22 2 17.514 2 12S6.486 2 12 2c3.171 0 5.829 1.114 7.885 2.914l-2.914 2.8C15.743 6.8 14.057 6 12 6 8.686 6 6 8.686 6 12s2.686 6 6 6c3 0 4.971-1.714 5.371-4.114H12v-1.898Z" />
                                     </svg>
+                                </a> -->
+                                {% load socialaccount %}
+                                <a href="{% provider_login_url 'google' %}" class="social-btn google" title="Google">
+                                    <svg viewBox="0 0 24 24" class="icon">
+                                        <path fill="#EA4335"
+                                            d="M12 11.988h9.428c.086.471.142.942.142 1.571C21.57 18.457 17.829 22 12 22 6.486 22 2 17.514 2 12S6.486 2 12 2c3.171 0 5.829 1.114 7.885 2.914l-2.914 2.8C15.743 6.8 14.057 6 12 6 8.686 6 6 8.686 6 12s2.686 6 6 6c3 0 4.971-1.714 5.371-4.114H12v-1.898Z"/>
+                                    </svg>
                                 </a>
+
                                 <!-- GitHub -->
-                                <a href="/accounts/github/login/" class="social-btn github" title="GitHub">
+                                <!-- <a href="/accounts/github/login/" class="social-btn github" title="GitHub">
                                     <svg viewBox="0 0 24 24" class="icon">
                                         <path fill="currentColor"
                                             d="M12 .5C5.648.5.5 5.648.5 12c0 5.086 3.292 9.387 7.863 10.914.575.104.786-.25.786-.556 0-.274-.01-1-.015-1.963-3.198.695-3.874-1.542-3.874-1.542-.523-1.33-1.277-1.685-1.277-1.685-1.044-.714.079-.7.079-.7 1.155.082 1.763 1.187 1.763 1.187 1.027 1.76 2.695 1.252 3.35.957.104-.744.402-1.252.73-1.54-2.553-.29-5.235-1.277-5.235-5.68 0-1.255.448-2.282 1.185-3.086-.119-.29-.513-1.46.113-3.046 0 0 .967-.31 3.168 1.18a10.95 10.95 0 0 1 2.884-.389c.978.005 1.963.133 2.884.389 2.201-1.49 3.166-1.18 3.166-1.18.628 1.586.234 2.756.115 3.046.739.804 1.183 1.831 1.183 3.086 0 4.418-2.688 5.387-5.252 5.672.414.357.783 1.07.783 2.157 0 1.557-.014 2.812-.014 3.193 0 .309.207.667.793.553C20.213 21.383 23.5 17.084 23.5 12 23.5 5.648 18.352.5 12 .5Z" />
                                     </svg>
+                                </a> -->
+                                {% load socialaccount %}
+                                <a href="{% provider_login_url 'github' %}" class="social-btn github" title="GitHub">
+                                <svg viewBox="0 0 24 24" class="icon">
+                                    <path fill="currentColor" d="M12 .5C5.648.5.5 5.648.5 12c0 5.086 3.292 9.387 7.863 10.914.575.104.786-.25.786-.556 ..."/>
+                                </svg>
                                 </a>
+
                                 <!-- LinkedIn -->
                                 <a href="/accounts/linkedin_oauth2/login/" class="social-btn linkedin" title="LinkedIn">
                                     <svg viewBox="0 0 24 24" class="icon">
