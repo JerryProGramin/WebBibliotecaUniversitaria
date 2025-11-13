@@ -1,141 +1,309 @@
 {% extends 'web/base.html' %}
 {% load static %}
 
-{% block title %}Panel - Biblioteca{% endblock %}
+{% block title %}Panel de Biblioteca{% endblock %}
 {% block header_title %}Panel de Biblioteca{% endblock %}
 
 {% block content %}
 
-<!-- TARJETAS RESUMEN -->
-<div class="cards-row">
-    <div class="info-card">
-        <span class="card-label">Estudiantes</span>
-        <span class="card-value">{{ total_students }}</span>
-    </div>
-    <div class="info-card">
-        <span class="card-label">Títulos de libros</span>
-        <span class="card-value">{{ total_books }}</span>
-    </div>
-    <div class="info-card">
-        <span class="card-label">Ejemplares físicos</span>
-        <span class="card-value">{{ total_copies }}</span>
+<div class="dashboard-wrapper">
+
+    <!-- CARDS RESUMEN -->
+    <div class="dash-summary">
+        <div class="summary-card">
+            <span class="summary-label">Estudiantes</span>
+            <span class="summary-value">{{ total_students }}</span>
+        </div>
+
+        <div class="summary-card">
+            <span class="summary-label">Títulos de libros</span>
+            <span class="summary-value">{{ total_books }}</span>
+        </div>
+
+        <div class="summary-card">
+            <span class="summary-label">Ejemplares físicos</span>
+            <span class="summary-value">{{ total_copies }}</span>
+        </div>
+
+        <div class="summary-card">
+            <span class="summary-label">Préstamos activos</span>
+            <span class="summary-value">{{ active_loans }}</span>
+        </div>
     </div>
 
-    <div class="info-card">
-        <span class="card-label">Préstamos activos</span>
-        <span class="card-value">{{ active_loans }}</span>
-    </div>
-</div>
 
-<!-- GRÁFICOS -->
-<div class="charts-row">
-    <div class="chart-card">
-        <h3>Préstamos últimos meses</h3>
-        <canvas id="loansByMonthChart"></canvas>
+    <!-- GRÁFICOS -->
+    <div class="dash-charts">
+
+        <div class="chart-card">
+            <div class="chart-header">
+                <h3>Préstamos últimos meses</h3>
+                <span class="chart-subtitle">Tendencia de movimientos</span>
+            </div>
+            <div class="chart-body">
+                <canvas id="loansByMonth" height="260"></canvas>
+            </div>
+        </div>
+
+        <div class="chart-card">
+            <div class="chart-header">
+                <h3>Libros por categoría</h3>
+                <span class="chart-subtitle">Distribución del catálogo</span>
+            </div>
+            <div class="chart-body">
+                <canvas id="booksByCategory" height="260"></canvas>
+            </div>
+        </div>
+
     </div>
 
-    <div class="chart-card">
-        <h3>Libros por categoría</h3>
-        <canvas id="booksByCategoryChart"></canvas>
-    </div>
 </div>
 
 {% endblock %}
 
 {% block extra_css %}
 <style>
-    .cards-row {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
-        gap: 1.2rem;
-        margin-bottom: 1.8rem;
+    .dash-summary {
+        display: flex;
+        gap: 1rem;
+        margin-bottom: 1.5rem;
+        flex-wrap: wrap;
+        /* por si la pantalla es pequeña */
     }
 
-    .info-card {
-        position: relative;
-        background: linear-gradient(135deg, #ffffff 0%, #ffe7ef 100%);
-        border-radius: 20px;
-        padding: 1.1rem 1.3rem 1.2rem;
-        box-shadow: 0 14px 30px rgba(0, 0, 0, 0.08);
-        overflow: hidden;
+    .summary-card {
+        flex: 1 1 180px;
+        /* todas en una fila, adaptables */
+        background: #ffffff;
+        border-radius: 18px;
+        padding: 1rem 1.2rem;
+        box-shadow: 0 4px 18px rgba(0, 0, 0, 0.05);
+        border: 1px solid #f2d8e3;
     }
 
-    .info-card::after {
-        content: "";
-        position: absolute;
-        right: -25px;
-        top: -25px;
-        width: 80px;
-        height: 80px;
-        border-radius: 50%;
-        background: rgba(123, 17, 56, 0.2);
-    }
-
-    .card-label {
+    .summary-label {
         font-size: .85rem;
         color: #7b1138;
-        font-weight: 600;
-        letter-spacing: .03em;
-        text-transform: uppercase;
+        opacity: .8;
     }
 
-    .card-value {
-        margin-top: .35rem;
-        font-size: 2rem;
-        font-weight: 800;
-        color: #2b2b2b;
+    .summary-value {
+        display: block;
+        margin-top: .3rem;
+        font-size: 1.6rem;
+        font-weight: 700;
+        color: #7b1138;
     }
 
-    .charts-row {
+    @media (max-width: 768px) {
+        .dash-summary {
+            flex-direction: column;
+            /* en móvil se apilan bonito */
+        }
+    }
+
+    .dashboard-wrapper {
+        padding: 1.5rem 1.8rem 2rem;
+    }
+
+    .dash-cards {
         display: grid;
-        grid-template-columns: 2fr 1.4fr;
-        gap: 1.4rem;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 1rem;
+        margin-bottom: 1.5rem;
+    }
+
+    .dash-card {
+        background: #ffffff;
+        border-radius: 18px;
+        padding: 1rem 1.2rem;
+        box-shadow: 0 4px 18px rgba(0, 0, 0, 0.05);
+        border: 1px solid #f2d8e3;
+    }
+
+    .dash-card-label {
+        margin: 0;
+        font-size: .85rem;
+        color: #7b1138;
+        opacity: .75;
+    }
+
+    .dash-card-value {
+        margin: .25rem 0 0;
+        font-size: 1.6rem;
+        font-weight: 700;
+        color: #7b1138;
+    }
+
+    .dash-charts {
+        display: grid;
+        grid-template-columns: minmax(0, 2fr) minmax(0, 1.4fr);
+        gap: 1.5rem;
     }
 
     .chart-card {
-        background: #fff;
-        border-radius: 20px;
-        padding: 1rem 1.2rem 1.5rem;
-        box-shadow: 0 12px 28px rgba(0, 0, 0, 0.06);
-        min-height: 260px;
+        background: #ffffff;
+        border-radius: 18px;
+        padding: 1rem 1.2rem 1.4rem;
+        box-shadow: 0 4px 18px rgba(0, 0, 0, 0.05);
+        border: 1px solid #f2d8e3;
+        display: flex;
+        flex-direction: column;
     }
 
-    .chart-card h3 {
-        margin: 0 0 .9rem;
-        font-size: 1rem;
+    .chart-header h3 {
+        margin: 0;
         color: #7b1138;
-        font-weight: 600;
+        font-size: 1rem;
     }
 
-    .chart-card canvas {
-        width: 100% !important;
-        height: 220px !important;
+    .chart-subtitle {
+        font-size: .75rem;
+        color: #999;
     }
 
-    @media (max-width: 900px) {
-        .charts-row {
+    .chart-body {
+        margin-top: .75rem;
+        position: relative;
+        height: 260px;
+        /* controla el alto del gráfico */
+    }
+
+    @media (max-width: 1024px) {
+        .dash-cards {
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+
+        .dash-charts {
+            grid-template-columns: 1fr;
+        }
+    }
+
+    @media (max-width: 640px) {
+        .dash-cards {
             grid-template-columns: 1fr;
         }
     }
 </style>
 {% endblock %}
 
-
 {% block extra_js %}
-<!-- Chart.js desde CDN -->
+<!-- Chart.js CDN -->
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
-<!-- Pasar los datos de Django a JS -->
-<script src="{% static 'web/js/dashboard.js' %}"></script>
 <script>
+    // ====== DATOS DESDE DJANGO (SEGURO CON JSON.parse) ======
     window.DASHBOARD_DATA = {
         catLabels: JSON.parse('{{ cat_labels_json|default:"[]"|escapejs }}'),
         catCounts: JSON.parse('{{ cat_counts_json|default:"[]"|escapejs }}'),
         monthLabels: JSON.parse('{{ month_labels_json|default:"[]"|escapejs }}'),
         monthCounts: JSON.parse('{{ month_counts_json|default:"[]"|escapejs }}'),
     };
+
+
+    document.addEventListener('DOMContentLoaded', function () {
+        const data = window.DASHBOARD_DATA || {
+            catLabels: [],
+            catCounts: [],
+            monthLabels: [],
+            monthCounts: [],
+        };
+
+        // ====== COLORES BASE ======
+        const mainColor = '#b13860';
+        const softColor = '#f9e0ea';
+
+        // ====== GRÁFICO 1: PRÉSTAMOS POR MES ======
+        const monthCanvas = document.getElementById('loansByMonth');
+        if (monthCanvas) {
+            const ctx1 = monthCanvas.getContext('2d');
+            new Chart(ctx1, {
+                type: 'bar',
+                data: {
+                    labels: data.monthLabels,
+                    datasets: [{
+                        label: 'Préstamos',
+                        data: data.monthCounts,
+                        backgroundColor: softColor,
+                        borderColor: mainColor,
+                        borderWidth: 2,
+                        borderRadius: 8,
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,   // dejamos que el alto fijo del canvas mande
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: {
+                            backgroundColor: '#fff',
+                            titleColor: '#333',
+                            bodyColor: '#333',
+                            borderColor: mainColor,
+                            borderWidth: 1
+                        }
+                    },
+                    scales: {
+                        x: {
+                            grid: { display: false },
+                            ticks: { color: '#555' }
+                        },
+                        y: {
+                            beginAtZero: true,
+                            grid: { color: '#f2d8e3' },
+                            ticks: { color: '#555', precision: 0 }
+                        }
+                    }
+                }
+            });
+        }
+
+        // ====== GRÁFICO 2: LIBROS POR CATEGORÍA ======
+        const catCanvas = document.getElementById('booksByCategory');
+        if (catCanvas) {
+            const ctx2 = catCanvas.getContext('2d');
+            new Chart(ctx2, {
+                type: 'bar',
+                data: {
+                    labels: data.catLabels,
+                    datasets: [{
+                        label: 'Libros',
+                        data: data.catCounts,
+                        backgroundColor: softColor,
+                        borderColor: mainColor,
+                        borderWidth: 2,
+                        borderRadius: 8,
+                    }]
+                },
+                options: {
+                    indexAxis: 'y',  // barras horizontales
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: {
+                            backgroundColor: '#fff',
+                            titleColor: '#333',
+                            bodyColor: '#333',
+                            borderColor: mainColor,
+                            borderWidth: 1
+                        }
+                    },
+                    scales: {
+                        x: {
+                            beginAtZero: true,
+                            grid: { color: '#f2d8e3' },
+                            ticks: { color: '#555', precision: 0 }
+                        },
+                        y: {
+                            grid: { display: false },
+                            ticks: { color: '#555' }
+                        }
+                    }
+                }
+            });
+        }
+    });
+
 </script>
-
-
-<!-- JS del dashboard -->
 {% endblock %}
