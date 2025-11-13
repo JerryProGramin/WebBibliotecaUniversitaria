@@ -170,6 +170,9 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/5.2/howto/static-files/
 
 STATIC_URL = 'static/'
+STATICFILES_DIRS = [
+    BASE_DIR / 'web' / 'static',
+]
 
 from pathlib import Path
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -182,3 +185,7 @@ STATIC_ROOT = BASE_DIR / "staticfiles"
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+LOGIN_URL = '/login/'
+LOGIN_REDIRECT_URL = '/'        # a dónde va después de loguearse
+LOGOUT_REDIRECT_URL = '/login/' # opcional

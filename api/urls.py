@@ -9,6 +9,12 @@ from .views import (
 
 router = DefaultRouter()
 router.register(r'sys-users', TbUserViewSet)
+    UserViewSet, AuthorViewSet, CategoryViewSet, BookViewSet,
+    BookDetailViewSet, StudentViewSet, LoanViewSet
+)
+
+router = DefaultRouter()
+router.register(r'users', UserViewSet)
 router.register(r'authors', AuthorViewSet)
 router.register(r'categories', CategoryViewSet)
 router.register(r'books', BookViewSet)

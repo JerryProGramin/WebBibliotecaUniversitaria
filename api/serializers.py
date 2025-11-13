@@ -30,9 +30,6 @@ class StaffProfileSerializer(serializers.ModelSerializer):
 
 class TbUserSerializer(serializers.ModelSerializer):
     class Meta:
-        model = tb_user
-        fields = '__all__'
-
 
 class AuthorSerializer(serializers.ModelSerializer):
     class Meta:
