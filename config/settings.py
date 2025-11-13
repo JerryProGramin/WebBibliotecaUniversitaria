@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-1b%-&j-i@wnfn6*#kfi5b^+)nt7ew^5xacbqhmw33_%1kwp#n5
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.environ.get('DEBUG', 'False') == 'True'
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['webbibliotecauniversitaria.onrender.com']
 
 
 # Application definition
