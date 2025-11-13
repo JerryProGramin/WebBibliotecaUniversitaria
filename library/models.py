@@ -1,9 +1,8 @@
 # library/models.py
 from django.db import models
 
-
 class tb_user(models.Model):
-    # este parece más un usuario interno del sistema
+    # esto venía en tus migraciones iniciales
     nombre = models.CharField(max_length=100)
     email = models.CharField(max_length=200)
     password = models.CharField(max_length=100)
@@ -41,7 +40,7 @@ class tb_book(models.Model):
     titulo = models.CharField(max_length=200)
     autor = models.ForeignKey('tb_author', on_delete=models.CASCADE)
     anio_publicacion = models.IntegerField()
-    # de tu migración 0002
+    # de tu migración: libro puede tener muchas categorías
     category = models.ManyToManyField('tb_category', blank=True)
 
     class Meta:
@@ -53,12 +52,10 @@ class tb_book(models.Model):
 
 
 class tb_book_detail(models.Model):
-    """
-    Ejemplares físicos del libro.
-    """
+    # ejemplares físicos
     codigo_isbn = models.CharField(max_length=13)
     estado_fisico = models.CharField(max_length=100)
-    estado_prestamo = models.BooleanField()
+    estado_prestamo = models.BooleanField()  # True = prestado, False = disponible
     libro_padre = models.ForeignKey('tb_book', on_delete=models.CASCADE)
 
     class Meta:
@@ -92,4 +89,4 @@ class tb_loan(models.Model):
         db_table = 'tb_loan'
 
     def __str__(self):
-        return f"Prestamo {self.id} - {self.estudiante}"
+        return f"Préstamo {self.id} - {self.estudiante}"

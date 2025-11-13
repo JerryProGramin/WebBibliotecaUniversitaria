@@ -1,37 +1,96 @@
-{% extends 'web/base.html' %}
-{% block title %}Dashboard{% endblock %}
-{% block content %}
-<header class="page-header">
-    <h1>Panel de Biblioteca</h1>
-    <p class="subtitle">Bienvenido, gestiona toda la información desde aquí</p>
-</header>
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
 
-<section class="cards-grid">
-    <div class="card stat">
-        <h3>Libros</h3>
-        <p class="stat-number">{{ total_libros }}</p>
-        <span class="stat-desc">registrados</span>
-    </div>
-    <div class="card stat">
-        <h3>Estudiantes</h3>
-        <p class="stat-number">{{ total_estudiantes }}</p>
-        <span class="stat-desc">registrados</span>
-    </div>
-    <div class="card stat">
-        <h3>Préstamos</h3>
-        <p class="stat-number">{{ prestamos_activos }}</p>
-        <span class="stat-desc">realizados</span>
-    </div>
-</section>
+<head>
+    <meta charset="UTF-8">
+    <title>Panel de Biblioteca</title>
+    <link rel="stylesheet" href="{% static 'web/css/dashboard.css' %}">
+</head>
 
-<section class="card table-card">
-    <div class="card-header">
-        <h2>Acciones Rápidas</h2>
+<body class="dash-body">
+    <div class="dash-layout">
+        <!-- SIDEBAR -->
+        <aside class="dash-sidebar">
+            <div class="sb-logo">
+                <img src="{% static 'web/img/logo-biblio.png' %}" alt="logo" class="sb-logo-img">
+                <span class="sb-title">UNIVERSIDAD TECNOLÓGICA</span>
+            </div>
+
+            <div class="sb-user">
+                <div class="sb-user-icon">👤</div>
+                <div class="sb-user-data">
+                    <p class="sb-user-name">
+                        {% if user.is_authenticated %}
+                        {{ user.get_full_name|default:user.username }}
+                        {% else %}
+                        Personal Biblioteca
+                        {% endif %}
+                    </p>
+                    <p class="sb-user-mail">
+                        {% if user.is_authenticated %}
+                        {{ user.email }}
+                        {% else %}
+                        biblioteca@utx.edu
+                        {% endif %}
+                    </p>
+                </div>
+            </div>
+
+            <nav class="sb-menu">
+                <a href="{% url 'dashboard' %}" class="sb-link active">INICIO</a>
+                <a href="#" class="sb-link">ALUMNOS</a>
+                <a href="#" class="sb-link">PRESTAMOS</a>
+                <a href="#" class="sb-link">LIBROS</a>
+            </nav>
+
+            <a href="{% url 'logout' %}" class="sb-logout">Cerrar sesión</a>
+        </aside>
+
+        <!-- CONTENIDO -->
+        <main class="dash-main">
+            <header class="dash-header">
+                <h1>Biblioteca</h1>
+                <button class="menu-btn">
+                    <span></span><span></span><span></span>
+                </button>
+            </header>
+
+            <section class="dash-cards">
+                <div class="dash-card">
+                    <p class="dc-number">{{ libros_disponibles|default:"0" }}</p>
+                    <p class="dc-label">Libros disponibles</p>
+                </div>
+                <div class="dash-card">
+                    <p class="dc-number">{{ libros_prestados|default:"0" }}</p>
+                    <p class="dc-label">Libros prestados</p>
+                </div>
+                <div class="dash-card">
+                    <p class="dc-number">{{ libros_espera|default:"0" }}</p>
+                    <p class="dc-label">Libros en espera</p>
+                </div>
+            </section>
+
+            <section class="dash-charts">
+                <div class="chart-box">
+                    <h2>CANTIDAD DE LIBROS PRESTADOS POR FECHA</h2>
+                    <div class="bars">
+                        <div class="bar" style="height: 35%;"></div>
+                        <div class="bar" style="height: 80%;"></div>
+                        <div class="bar" style="height: 60%;"></div>
+                    </div>
+                </div>
+                <div class="chart-box">
+                    <h2>CANTIDAD DE PRÉSTAMOS POR FACULTAD</h2>
+                    <div class="bars">
+                        <div class="bar" style="height: 75%;"></div>
+                        <div class="bar" style="height: 35%;"></div>
+                        <div class="bar" style="height: 55%;"></div>
+                    </div>
+                </div>
+            </section>
+        </main>
     </div>
-    <div class="quick-actions">
-        <a href="{% url 'prestamo_create' %}" class="btn primary">➕ Nuevo préstamo</a>
-        <a href="{% url 'book_create' %}" class="btn">➕ Nuevo libro</a>
-        <a href="{% url 'student_create' %}" class="btn">➕ Nuevo estudiante</a>
-    </div>
-</section>
-{% endblock %}
+</body>
+
+</html>

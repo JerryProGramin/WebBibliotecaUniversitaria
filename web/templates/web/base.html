@@ -4,27 +4,24 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>{% block title %}Panel de Biblioteca{% endblock %}</title>
+    <title>{% block title %}Biblioteca{% endblock %}</title>
     <link rel="stylesheet" href="{% static 'web/css/style.css' %}">
 </head>
 
 <body>
     <div class="layout">
-        <!-- Sidebar -->
         <aside class="sidebar">
             <div class="sidebar-header">
                 <h2>📚 Biblioteca</h2>
             </div>
             <nav class="sidebar-nav">
                 <a href="{% url 'dashboard' %}" class="nav-item">🏠 Dashboard</a>
-                <a href="{% url 'prestamo_create' %}" class="nav-item">📄 Registrar Préstamo</a>
-                <a href="{% url 'book_create' %}" class="nav-item">📘 Registrar Libro</a>
-                <a href="{% url 'student_create' %}" class="nav-item">🧑‍🎓 Registrar Estudiante</a>
-                <a href="{% url 'logout' %}" class="nav-item logout">🚪 Cerrar Sesión</a>
+                <a href="{% url 'prestamo_create' %}" class="nav-item">📄 Registrar préstamo</a>
+                <a href="{% url 'book_create' %}" class="nav-item">📘 Registrar libro</a>
+                <a href="{% url 'student_create' %}" class="nav-item">🧑‍🎓 Registrar estudiante</a>
+                <a href="{% url 'logout' %}" class="nav-item logout">🚪 Cerrar sesión</a>
             </nav>
         </aside>
-
-        <!-- Main content -->
         <main class="main-content">
             {% block content %}{% endblock %}
         </main>

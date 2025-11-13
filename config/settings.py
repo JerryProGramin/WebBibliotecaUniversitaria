@@ -11,7 +11,7 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 """
 
 from pathlib import Path
-
+import os
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -23,35 +23,77 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-1b%-&j-i@wnfn6*#kfi5b^+)nt7ew^5xacbqhmw33_%1kwp#n5'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.environ.get('DEBUG', 'False') == 'True'
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['webbibliotecauniversitaria.onrender.com']
 
 
 # Application definition
 
 INSTALLED_APPS = [
+    # core de django
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+
+    # para login social
+    'django.contrib.sites',      # <- necesario para allauth
+
+    # terceros
     'rest_framework',
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
+    # proveedores sociales:
+    'allauth.socialaccount.providers.google',
+    'allauth.socialaccount.providers.github',
+    'allauth.socialaccount.providers.facebook',
+    'allauth.socialaccount.providers.linkedin_oauth2',
+    'rest_framework.authtoken',
+
+    # dj-rest-auth para exponer la API de login
+    'dj_rest_auth',
+    'dj_rest_auth.registration',
+
+    # tuyas
     'library',
+    'accounts',
     'api',
     'web',
 ]
+SITE_ID = 1
+LOGIN_REDIRECT_URL = '/'
+LOGOUT_REDIRECT_URL = '/login/'
+
+REST_AUTH_REGISTER_SERIALIZERS = {
+    "REGISTER_SERIALIZER": "accounts.serializers.CustomRegisterSerializer",
+}
+
+EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
+
+ACCOUNT_EMAIL_VERIFICATION = "none"
+ACCOUNT_EMAIL_REQUIRED = True  
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.TokenAuthentication',
+    ],
+}
 
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'allauth.account.middleware.AccountMiddleware',
 ]
 
 ROOT_URLCONF = 'config.urls'
@@ -80,11 +122,11 @@ WSGI_APPLICATION = 'config.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'bd_biblioteca_uni',      # el nombre que creaste
-        'USER': 'root',
-        'PASSWORD': 'sanchin*2005',
-        'HOST': '127.0.0.1',           # o el host de tu servidor
-        'PORT': '3307',                # el puerto por defecto
+        'NAME': 'oct07cdo_biblioteca_bd',      
+        'USER': 'oct07cdo_dext',
+        'PASSWORD': 'IrJn}0GlGm4ul,%U',
+        'HOST': 'codeinfiniter.com',          
+        'PORT': '3306',                
         'OPTIONS': {
             'init_command': "SET sql_mode='STRICT_TRANS_TABLES'"
         }
@@ -132,6 +174,13 @@ STATICFILES_DIRS = [
     BASE_DIR / 'web' / 'static',
 ]
 
+from pathlib import Path
+BASE_DIR = Path(__file__).resolve().parent.parent
+
+STATICFILES_DIRS = [
+    BASE_DIR / 'web' / 'static',
+]
+STATIC_ROOT = BASE_DIR / "staticfiles"
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 

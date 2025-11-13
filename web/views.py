@@ -1,90 +1,64 @@
-from django.contrib.auth.decorators import login_required
+# web/views.py
+import requests
 from django.shortcuts import render, redirect
-from library.models import tb_book, tb_student, tb_loan, tb_book_detail,tb_author,tb_category,tb_student
-from django.utils import timezone
-from django.views.decorators.http import require_http_methods
+from django.contrib import messages
+from accounts.serializers import CustomRegisterSerializer
+from rest_framework.exceptions import ValidationError
+from django.contrib.auth import authenticate, login as auth_login
+from django.contrib.auth.decorators import login_required
 
-@login_required
+API_LOGIN = 'http://127.0.0.1:8000/api/auth/login/'
+
+def login_view(request):
+    register_errors = {}
+    login_error = None
+
+    # LOGIN
+    if request.method == 'POST' and request.POST.get('form_type') == 'login':
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+
+        user = authenticate(request, username=username, password=password)
+        if user:
+            auth_login(request, user)     # <- aquí se guarda la sesión
+            return redirect('dashboard')  # <- esto sí te manda al dashboard
+        else:
+            login_error = "Usuario o contraseña incorrectos."
+
+    # REGISTRO (igual que antes)
+    if request.method == 'POST' and request.POST.get('form_type') == 'register':
+        data = {
+            "username": request.POST.get("username"),
+            "email": request.POST.get("email"),
+            "password1": request.POST.get("password1"),
+            "password2": request.POST.get("password2"),
+            "first_name": request.POST.get("first_name", ""),
+            "last_name": request.POST.get("last_name", ""),
+        }
+        serializer = CustomRegisterSerializer(data=data, context={'request': request})
+        if serializer.is_valid():
+            serializer.save(request)
+            return redirect('login')
+        else:
+            register_errors = serializer.errors
+
+    return render(request, 'web/login.html', {
+        "error": login_error,
+        "register_errors": register_errors,
+    })
+
+
+@login_required(login_url='login')
 def dashboard(request):
-    total_libros = tb_book.objects.count()
-    total_estudiantes = tb_student.objects.count()
-    prestamos_activos = tb_loan.objects.count()
-    return render(request, 'web/dashboard.html', {
-        'total_libros': total_libros,
-        'total_estudiantes': total_estudiantes,
-        'prestamos_activos': prestamos_activos,
-    })
+    context = {
+        'libros_disponibles': 50000,
+        'libros_prestados': 20000,
+        'libros_espera': 10000,
+    }
+    return render(request, 'web/dashboard.html', context)
 
-@login_required
-@require_http_methods(["GET", "POST"])
-def prestamo_create(request):
-    if request.method == "POST":
-        estudiante_id = request.POST.get('estudiante')
-        ejemplar_id = request.POST.get('ejemplar')
-        fecha_fin = request.POST.get('fecha_fin')
-        comentarios = request.POST.get('comentarios', '')
 
-        estudiante = tb_student.objects.get(id=estudiante_id)
-        ejemplar = tb_book_detail.objects.get(id=ejemplar_id)
-
-        # aquí podrías validar si el ejemplar está disponible
-        tb_loan.objects.create(
-            fecha_inicio=timezone.now().date(),
-            fecha_fin=fecha_fin,
-            comentarios=comentarios,
-            libro=ejemplar,
-            estudiante=estudiante
-        )
-
-        # podrías marcar el ejemplar como prestado:
-        ejemplar.estado_prestamo = True
-        ejemplar.save()
-
-        return redirect('dashboard')
-
-    estudiantes = tb_student.objects.all()
-    ejemplares_disponibles = tb_book_detail.objects.filter(estado_prestamo=False)
-    return render(request, 'web/prestamo_form.html', {
-        'estudiantes': estudiantes,
-        'ejemplares': ejemplares_disponibles
-    })
-
-@login_required
-def book_create(request):
-    if request.method == "POST":
-        titulo = request.POST.get('titulo')
-        autor_id = request.POST.get('autor')
-        anio = request.POST.get('anio_publicacion')
-        categorias_ids = request.POST.getlist('categorias')
-
-        autor = tb_author.objects.get(id=autor_id)
-        book = tb_book.objects.create(
-            titulo=titulo,
-            autor=autor,
-            anio_publicacion=anio
-        )
-        if categorias_ids:
-            book.category.set(categorias_ids)
-
-        return redirect('dashboard')
-
-    autores = tb_author.objects.all()
-    categorias = tb_category.objects.all()
-    return render(request, 'web/book_form.html', {
-        'autores': autores,
-        'categorias': categorias
-    })
-
-@login_required
-def student_create(request):
-    if request.method == "POST":
-        nombres = request.POST.get('nombres')
-        apellidos = request.POST.get('apellidos')
-        dni = request.POST.get('dni')
-        tb_student.objects.create(
-            nombres=nombres,
-            apellidos=apellidos,
-            dni=dni
-        )
-        return redirect('dashboard')
-    return render(request, 'web/student_form.html')
+def logout_view(request):
+    # borra el token que guardamos cuando hicimos login contra el API
+    request.session.flush()
+    return redirect('login')

@@ -4,13 +4,32 @@ from library.models import (
     tb_user, tb_author, tb_category, tb_book,
     tb_book_detail, tb_student, tb_loan
 )
+from accounts.models import StaffProfile, StaffRole
+from django.contrib.auth.models import User
 
 
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
-        model = tb_user
+        model = User
+        fields = ['id', 'username', 'email', 'first_name', 'last_name']
+
+
+class StaffRoleSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = StaffRole
         fields = '__all__'
 
+
+class StaffProfileSerializer(serializers.ModelSerializer):
+    user = UserSerializer()
+
+    class Meta:
+        model = StaffProfile
+        fields = ['id', 'user', 'role', 'is_active_staff']
+
+
+class TbUserSerializer(serializers.ModelSerializer):
+    class Meta:
 
 class AuthorSerializer(serializers.ModelSerializer):
     class Meta:

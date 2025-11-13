@@ -5,26 +5,183 @@
 <head>
     <meta charset="UTF-8">
     <title>Iniciar sesión</title>
-    <link rel="stylesheet" href="{% static 'web/css/style.css' %}">
+    <link rel="stylesheet" href="{% static 'web/css/login.css' %}">
 </head>
 
-<body class="login-body">
-    <div class="login-container">
-        <h2>Biblioteca - Iniciar sesión</h2>
-        <form method="post">
-            {% csrf_token %}
-            {{ form.non_field_errors }}
-            <div class="form-group">
-                <label>Usuario</label>
-                {{ form.username }}
+<body class="login-page">
+
+    <!-- fondo rosado -->
+    <div class="login-top-band"></div>
+
+    <main class="login-shell">
+        <div class="login-card-2col" id="auth-card">
+            <!-- títulos -->
+            <div class="card-corner-left">UNIVERSIDAD TECNOLÓGICA XYZ</div>
+            <div class="card-corner-right" id="card-title">Iniciar sesión</div>
+
+            <!-- LADO IZQUIERDO (imagen) -->
+            <div class="login-left">
+                <div class="login-hero">
+                    <img id="hero-img" src="{% static 'web/img/inicio.webp' %}"
+                        data-login-img="{% static 'web/img/inicio.webp' %}"
+                        data-register-img="{% static 'web/img/registro.webp' %}" alt="Personas" class="login-hero-img">
+
+                </div>
+                <p class="login-small" id="toggle-text">
+                    No tengo una cuenta.
+                    <a href="#" id="show-register">Registrar</a>
+                </p>
             </div>
-            <div class="form-group">
-                <label>Contraseña</label>
-                {{ form.password }}
+
+            <!-- LADO DERECHO (formularios) -->
+            <div class="login-right">
+                <!-- FORM LOGIN -->
+                <div class="form-block" id="login-form-block">
+                    <h1 class="login-title">Bienvenida/o</h1>
+                    <form method="post" class="login-form-modern">
+                        {% csrf_token %}
+                        <input type="hidden" name="form_type" value="login">
+                        {% if error %}
+                        <p class="login-error">{{ error }}</p>
+                        {% endif %}
+                        <label class="login-label">Usuario</label>
+                        <input type="text" name="username" class="login-input" placeholder="Ingresa tu usuario"
+                            required>
+
+                        <label class="login-label">Contraseña</label>
+                        <input type="password" name="password" class="login-input" placeholder="Ingresa tu contraseña"
+                            required>
+
+                        <div class="login-actions">
+                            <button type="submit" class="btn-main">Iniciar Sesión</button>
+                            <div class="social-buttons">
+                                <!-- Facebook -->
+                                <a href="/accounts/facebook/login/" class="social-btn fb" title="Facebook">
+                                    <svg viewBox="0 0 24 24" class="icon">
+                                        <path fill="currentColor"
+                                            d="M13 20v-6h2.5l.5-3H13V8.5C13 7.57 13.28 7 14.7 7H16V4.14C15.3 4.05 14.6 4 13.9 4 11.4 4 9.7 5.5 9.7 8.2V11H7v3h2.7v6h3.3Z" />
+                                    </svg>
+                                </a>
+                                <!-- Google -->
+                                <a href="/accounts/google/login/" class="social-btn google" title="Google">
+                                    <svg viewBox="0 0 24 24" class="icon">
+                                        <path fill="#EA4335"
+                                            d="M12 11.988h9.428c.086.471.142.942.142 1.571C21.57 18.457 17.829 22 12 22 6.486 22 2 17.514 2 12S6.486 2 12 2c3.171 0 5.829 1.114 7.885 2.914l-2.914 2.8C15.743 6.8 14.057 6 12 6 8.686 6 6 8.686 6 12s2.686 6 6 6c3 0 4.971-1.714 5.371-4.114H12v-1.898Z" />
+                                    </svg>
+                                </a>
+                                <!-- GitHub -->
+                                <a href="/accounts/github/login/" class="social-btn github" title="GitHub">
+                                    <svg viewBox="0 0 24 24" class="icon">
+                                        <path fill="currentColor"
+                                            d="M12 .5C5.648.5.5 5.648.5 12c0 5.086 3.292 9.387 7.863 10.914.575.104.786-.25.786-.556 0-.274-.01-1-.015-1.963-3.198.695-3.874-1.542-3.874-1.542-.523-1.33-1.277-1.685-1.277-1.685-1.044-.714.079-.7.079-.7 1.155.082 1.763 1.187 1.763 1.187 1.027 1.76 2.695 1.252 3.35.957.104-.744.402-1.252.73-1.54-2.553-.29-5.235-1.277-5.235-5.68 0-1.255.448-2.282 1.185-3.086-.119-.29-.513-1.46.113-3.046 0 0 .967-.31 3.168 1.18a10.95 10.95 0 0 1 2.884-.389c.978.005 1.963.133 2.884.389 2.201-1.49 3.166-1.18 3.166-1.18.628 1.586.234 2.756.115 3.046.739.804 1.183 1.831 1.183 3.086 0 4.418-2.688 5.387-5.252 5.672.414.357.783 1.07.783 2.157 0 1.557-.014 2.812-.014 3.193 0 .309.207.667.793.553C20.213 21.383 23.5 17.084 23.5 12 23.5 5.648 18.352.5 12 .5Z" />
+                                    </svg>
+                                </a>
+                                <!-- LinkedIn -->
+                                <a href="/accounts/linkedin_oauth2/login/" class="social-btn linkedin" title="LinkedIn">
+                                    <svg viewBox="0 0 24 24" class="icon">
+                                        <path fill="currentColor"
+                                            d="M19 3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2ZM8.339 18.338H5.667V9.75h2.672ZM7.003 8.673a1.549 1.549 0 1 1 .001-3.097 1.549 1.549 0 0 1-.001 3.097Zm11.335 9.665h-2.667v-4.17c0-.995-.019-2.276-1.388-2.276-1.389 0-1.602 1.085-1.602 2.205v4.241h-2.667V9.75h2.56v1.17h.036c.357-.675 1.228-1.387 2.53-1.387 2.706 0 3.206 1.781 3.206 4.099Z" />
+                                    </svg>
+                                </a>
+                            </div>
+                        </div>
+                    </form>
+                    <a href="#" class="login-forgot">Olvidé mi contraseña</a>
+                </div>
+
+                <!-- FORM REGISTRO -->
+                <div class="form-block {% if register_errors %}{% else %}hidden{% endif %}" id="register-form-block">
+                    <h1 class="login-title">Crear cuenta</h1>
+                    <form method="post" class="login-form-modern">
+                        {% csrf_token %}
+                        <input type="hidden" name="form_type" value="register">
+
+                        <!-- opcionales pero útiles -->
+                        <label class="login-label">Nombres</label>
+                        <input type="text" name="first_name" class="login-input" placeholder="Ingresa tus nombres"
+                            value="{{ request.POST.first_name }}">
+
+                        <label class="login-label">Apellidos</label>
+                        <input type="text" name="last_name" class="login-input" placeholder="Ingresa tus apellidos"
+                            value="{{ request.POST.last_name }}">
+
+                        <!-- requeridos por el backend -->
+                        <label class="login-label">Correo</label>
+                        <input type="email" name="email" class="login-input" placeholder="Ingresa tu correo" required
+                            value="{{ request.POST.email }}">
+                        {% if register_errors.email %}
+                        <p class="login-error">{{ register_errors.email.0 }}</p>
+                        {% endif %}
+
+                        <label class="login-label">Usuario</label>
+                        <input type="text" name="username" class="login-input" placeholder="Nombre de usuario" required
+                            value="{{ request.POST.username }}">
+                        {% if register_errors.username %}
+                        <p class="login-error">{{ register_errors.username.0 }}</p>
+                        {% endif %}
+
+                        <label class="login-label">Contraseña</label>
+                        <input type="password" name="password1" class="login-input" placeholder="Crea una contraseña"
+                            required>
+                        {% if register_errors.password1 %}
+                        <p class="login-error">
+                            {% for msg in register_errors.password1 %}
+                            {{ msg }}<br>
+                            {% endfor %}
+                        </p>
+                        {% endif %}
+
+                        <label class="login-label">Confirmar contraseña</label>
+                        <input type="password" name="password2" class="login-input" placeholder="Repite tu contraseña"
+                            required>
+                        {% if register_errors.password2 %}
+                        <p class="login-error">{{ register_errors.password2.0 }}</p>
+                        {% endif %}
+
+                        <div class="login-actions">
+                            <button type="submit" class="btn-main">Registrar</button>
+                            <button type="button" class="btn-link" id="back-to-login"></button>
+                        </div>
+
+                        <!-- redes sociales (opcional) -->
+                        <div class="social-buttons">
+                            <a href="/accounts/facebook/login/" class="social-btn fb" title="Facebook">
+                                <svg viewBox="0 0 24 24" class="icon">
+                                    <path fill="currentColor"
+                                        d="M13 20v-6h2.5l.5-3H13V8.5C13 7.57 13.28 7 14.7 7H16V4.14C15.3 4.05 14.6 4 13.9 4 11.4 4 9.7 5.5 9.7 8.2V11H7v3h2.7v6h3.3Z" />
+                                </svg>
+                            </a>
+                            <a href="/accounts/google/login/" class="social-btn google" title="Google">
+                                <svg viewBox="0 0 24 24" class="icon">
+                                    <path fill="#EA4335"
+                                        d="M12 11.988h9.428c.086.471.142.942.142 1.571C21.57 18.457 17.829 22 12 22 6.486 22 2 17.514 2 12S6.486 2 12 2c3.171 0 5.829 1.114 7.885 2.914l-2.914 2.8C15.743 6.8 14.057 6 12 6 8.686 6 6 8.686 6 12s2.686 6 6 6c3 0 4.971-1.714 5.371-4.114H12v-1.898Z" />
+                                </svg>
+                            </a>
+                            <a href="/accounts/github/login/" class="social-btn github" title="GitHub">
+                                <svg viewBox="0 0 24 24" class="icon">
+                                    <path fill="currentColor"
+                                        d="M12 .5C5.648.5.5 5.648.5 12c0 5.086 3.292 9.387 7.863 10.914.575.104.786-.25.786-.556 0-.274-.01-1-.015-1.963-3.198.695-3.874-1.542-3.874-1.542-.523-1.33-1.277-1.685-1.277-1.685-1.044-.714.079-.7.079-.7 1.155.082 1.763 1.187 1.763 1.187 1.027 1.76 2.695 1.252 3.35.957.104-.744.402-1.252.73-1.54-2.553-.29-5.235-1.277-5.235-5.68 0-1.255.448-2.282 1.185-3.086-.119-.29-.513-1.46.113-3.046 0 0 .967-.31 3.168 1.18a10.95 10.95 0 0 1 2.884-.389c.978.005 1.963.133 2.884.389 2.201-1.49 3.166-1.18 3.166-1.18.628 1.586.234 2.756.115 3.046.739.804 1.183 1.831 1.183 3.086 0 4.418-2.688 5.387-5.252 5.672.414.357.783 1.07.783 2.157 0 1.557-.014 2.812-.014 3.193 0 .309.207.667.793.553C20.213 21.383 23.5 17.084 23.5 12 23.5 5.648 18.352.5 12 .5Z" />
+                                </svg>
+                            </a>
+                            <a href="/accounts/linkedin_oauth2/login/" class="social-btn linkedin" title="LinkedIn">
+                                <svg viewBox="0 0 24 24" class="icon">
+                                    <path fill="currentColor"
+                                        d="M19 3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2ZM8.339 18.338H5.667V9.75h2.672ZM7.003 8.673a1.549 1.549 0 1 1 .001-3.097 1.549 1.549 0 0 1-.001 3.097Zm11.335 9.665h-2.667v-4.17c0-.995-.019-2.276-1.388-2.276-1.389 0-1.602 1.085-1.602 2.205v4.241h-2.667V9.75h2.56v1.17h.036c.357-.675 1.228-1.387 2.53-1.387 2.706 0 3.206 1.781 3.206 4.099Z" />
+                                </svg>
+                            </a>
+                        </div>
+                    </form>
+                </div>
+
             </div>
-            <button type="submit" class="btn">Entrar</button>
-        </form>
-    </div>
+        </div>
+    </main>
+
+    <footer class="login-footer">
+        <p>www.universidadxyz.pe/biblioteca</p>
+    </footer>
+
+    <script src="{% static 'web/js/login.js' %}"></script>
 </body>
 
 </html>
